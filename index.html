@@ -316,12 +316,12 @@
     .multi-select-trigger .tags { display: flex; flex-wrap: wrap; gap: 4px; max-width: 240px; overflow: hidden; }
     .multi-select-trigger .tag { background: #e6f7ff; color: #1890ff; padding: 1px 6px; border-radius: 3px; font-size: 12px; white-space: nowrap; }
     .multi-select-dropdown {
-      position: absolute; top: 100%; left: 0;
       min-width: 280px; background: #fff;
       border: 1px solid #d9d9d9; border-radius: 4px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.12);
       z-index: 2000;
       display: none; max-height: 320px; overflow-y: auto;
+      /* position/top/left 由 JS 动态设置（position:fixed） */
     }
     .multi-select-dropdown.show { display: block; }
     .multi-select-search {
@@ -979,7 +979,7 @@
       openUploadModal();
     }
 
-    // ===================== Multi-Select Dropdown Component =====================
+    // ===================== Multi-Select Dropdown Component (Portal) =====================
     function createMultiSelect(container, options, onChange) {
       let selected = [];
       let search = '';
@@ -991,8 +991,10 @@
       trigger.className = 'multi-select-trigger';
       trigger.innerHTML = '<span class="placeholder">请选择账户集</span><i class="fas fa-chevron-down" style="font-size:10px;color:#999;"></i>';
 
+      // 下拉菜单直接放到 body 上，避免被任何容器裁剪
       const dropdown = document.createElement('div');
       dropdown.className = 'multi-select-dropdown';
+      document.body.appendChild(dropdown);
 
       const searchBox = document.createElement('div');
       searchBox.className = 'multi-select-search';
@@ -1005,8 +1007,30 @@
       dropdown.appendChild(searchBox);
       dropdown.appendChild(list);
       wrap.appendChild(trigger);
-      wrap.appendChild(dropdown);
       container.appendChild(wrap);
+
+      function updateDropdownPosition() {
+        const rect = trigger.getBoundingClientRect();
+        const vh = window.innerHeight;
+        const vw = window.innerWidth;
+        let top = rect.bottom + 4;
+        let left = rect.left;
+        const dw = Math.max(280, rect.width);
+
+        // 下方空间不足则向上展开
+        if (top + 330 > vh - 8) {
+          top = rect.top - 330 - 4;
+          if (top < 8) top = 8;
+        }
+        if (left + dw > vw - 8) left = vw - dw - 8;
+        if (left < 8) left = 8;
+
+        dropdown.style.position = 'fixed';
+        dropdown.style.top = top + 'px';
+        dropdown.style.left = left + 'px';
+        dropdown.style.width = dw + 'px';
+        dropdown.style.zIndex = '99999';
+      }
 
       function renderList() {
         const filtered = options.filter(opt => {
@@ -1034,7 +1058,8 @@
         }).join('');
 
         list.querySelectorAll('.multi-select-item').forEach(item => {
-          item.addEventListener('click', () => {
+          item.addEventListener('click', (e) => {
+            e.stopPropagation();
             const id = item.dataset.id;
             if (selected.includes(id)) {
               selected = selected.filter(s => s !== id);
@@ -1060,15 +1085,21 @@
         }
       }
 
-            trigger.addEventListener('click', (e) => {
+      trigger.addEventListener('click', (e) => {
         e.stopPropagation();
         const isOpen = dropdown.classList.contains('show');
-        document.querySelectorAll('.multi-select-dropdown').forEach(d => d.classList.remove('show'));
+        // 关闭所有其他下拉
+        document.querySelectorAll('.multi-select-dropdown').forEach(d => {
+          d.classList.remove('show');
+        });
         document.querySelectorAll('.multi-select-trigger').forEach(t => t.classList.remove('open'));
+
         if (!isOpen) {
+          updateDropdownPosition();
           dropdown.classList.add('show');
           trigger.classList.add('open');
           searchInput.focus();
+          searchInput.select();
         }
       });
 
@@ -1077,21 +1108,44 @@
         renderList();
       });
 
-      document.addEventListener('click', (e) => {
-        if (!wrap.contains(e.target)) {
+      // 窗口滚动/缩放时重新定位
+      window.addEventListener('scroll', () => {
+        if (dropdown.classList.contains('show')) updateDropdownPosition();
+      }, true);
+      window.addEventListener('resize', () => {
+        if (dropdown.classList.contains('show')) updateDropdownPosition();
+      });
+
+      // 点击其他地方关闭（捕获阶段）
+      document.addEventListener('mousedown', (e) => {
+        if (!wrap.contains(e.target) && !dropdown.contains(e.target)) {
           dropdown.classList.remove('show');
           trigger.classList.remove('open');
         }
-      });
+      }, true);
+
+      // 滚动时也要检查 trigger 是否还在视口中，不在则关闭
+      window.addEventListener('scroll', () => {
+        if (dropdown.classList.contains('show')) {
+          const rect = trigger.getBoundingClientRect();
+          if (rect.bottom < 0 || rect.top > window.innerHeight) {
+            dropdown.classList.remove('show');
+            trigger.classList.remove('open');
+          }
+        }
+      }, true);
 
       renderList();
 
       return {
         getSelected: () => selected,
-        setSelected: (vals) => { selected = vals; updateTrigger(); renderList(); }
+        setSelected: (vals) => { selected = vals; updateTrigger(); renderList(); },
+        // 提供销毁方法（可选）
+        destroy: () => {
+          dropdown.remove();
+        }
       };
     }
-
     // ===================== Config Modal =====================
     function showConfigModal() {
       configSelections = {};
