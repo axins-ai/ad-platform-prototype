@@ -244,7 +244,7 @@
     }
 
     /* Upload type cards */
-    .upload-type-cards { display: flex; gap: 24px; justify-content: center; margin-bottom: 24px; }
+    .upload-type-cards { display: flex; gap: 24px; justify-content: center; }
     .upload-card {
       flex: 1; max-width: 240px;
       border: 2px solid #e8e8e8;
@@ -256,9 +256,8 @@
       position: relative;
     }
     .upload-card:hover { border-color: #bfbfbf; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
-    .upload-card.selected { border-width: 2px; }
-    .upload-card.incremental.selected { border-color: #1890ff; background: #e6f7ff; }
-    .upload-card.overwrite.selected { border-color: #fa8c16; background: #fff7e6; }
+    .upload-card.incremental:hover { border-color: #1890ff; }
+    .upload-card.overwrite:hover { border-color: #fa8c16; }
     .upload-card .card-icon {
       width: 56px; height: 56px;
       border-radius: 50%;
@@ -272,38 +271,11 @@
     .upload-card.incremental .card-title { color: #1890ff; }
     .upload-card.overwrite .card-title { color: #fa8c16; }
     .upload-card .card-desc { font-size: 13px; color: #999; line-height: 1.5; }
-    .upload-card .check-mark {
-      position: absolute; top: 8px; right: 8px;
-      width: 24px; height: 24px;
-      border-radius: 50%;
-      display: none;
-      align-items: center; justify-content: center;
-      color: #fff;
-      font-size: 12px;
-    }
-    .upload-card.incremental .check-mark { background: #1890ff; }
-    .upload-card.overwrite .check-mark { background: #fa8c16; }
-    .upload-card.selected .check-mark { display: flex; }
 
     .download-template {
       display: flex; justify-content: flex-end; margin-bottom: 16px;
     }
     .download-template .btn { font-size: 13px; }
-
-    .file-upload-area {
-      border: 2px dashed #d9d9d9;
-      border-radius: 8px;
-      padding: 40px;
-      text-align: center;
-      cursor: pointer;
-      transition: all 0.2s;
-      position: relative;
-    }
-    .file-upload-area:hover, .file-upload-area.dragover { border-color: #1890ff; background: #f0f7ff; }
-    .file-upload-area .upload-icon { font-size: 32px; color: #bfbfbf; margin-bottom: 12px; }
-    .file-upload-area .upload-text { font-size: 14px; color: #666; }
-    .file-upload-area .upload-hint { font-size: 12px; color: #999; margin-top: 8px; }
-    .file-upload-area input[type="file"] { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
 
     /* Progress */
     .upload-progress {
@@ -357,15 +329,6 @@
       vertical-align: middle;
     }
     .config-table tr:hover td { background: #fafafa; }
-    .account-select {
-      padding: 4px 8px;
-      border: 1px solid #d9d9d9;
-      border-radius: 4px;
-      font-size: 13px;
-      min-width: 120px;
-      outline: none;
-    }
-    .account-select:focus { border-color: #1890ff; }
     .account-tags { display: flex; flex-wrap: wrap; gap: 6px; }
     .account-tag {
       display: inline-flex; align-items: center; gap: 4px;
@@ -374,12 +337,6 @@
       font-size: 12px;
       background: #f0f0f0;
       color: #666;
-    }
-    .account-tag.new { background: #e6f7ff; color: #1890ff; }
-    .account-tag .tag-dot {
-      width: 6px; height: 6px;
-      border-radius: 50%;
-      background: currentColor;
     }
     .config-footer-status {
       display: flex; align-items: center; justify-content: space-between;
@@ -402,6 +359,81 @@
       color: #cf1322;
     }
     .fail-reason-item i { margin-top: 2px; }
+
+    /* Multi-select dropdown */
+    .multi-select-wrap { position: relative; display: inline-block; }
+    .multi-select-trigger {
+      min-width: 180px;
+      padding: 6px 12px;
+      border: 1px solid #d9d9d9;
+      border-radius: 4px;
+      background: #fff;
+      font-size: 13px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      color: #666;
+      transition: border-color 0.2s;
+    }
+    .multi-select-trigger:hover, .multi-select-trigger.open { border-color: #1890ff; }
+    .multi-select-trigger .placeholder { color: #999; }
+    .multi-select-trigger .tags {
+      display: flex; flex-wrap: wrap; gap: 4px;
+      max-width: 240px; overflow: hidden;
+    }
+    .multi-select-trigger .tag {
+      background: #e6f7ff;
+      color: #1890ff;
+      padding: 1px 6px;
+      border-radius: 3px;
+      font-size: 12px;
+      white-space: nowrap;
+    }
+    .multi-select-dropdown {
+      position: absolute; top: 100%; left: 0;
+      min-width: 280px;
+      background: #fff;
+      border: 1px solid #d9d9d9;
+      border-radius: 4px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+      z-index: 100;
+      margin-top: 4px;
+      display: none;
+      max-height: 320px;
+      overflow-y: auto;
+    }
+    .multi-select-dropdown.show { display: block; }
+    .multi-select-search {
+      padding: 8px 12px;
+      border-bottom: 1px solid #f0f0f0;
+      position: sticky; top: 0; background: #fff; z-index: 2;
+    }
+    .multi-select-search input {
+      width: 100%;
+      padding: 6px 10px;
+      border: 1px solid #d9d9d9;
+      border-radius: 4px;
+      font-size: 13px;
+      outline: none;
+    }
+    .multi-select-search input:focus { border-color: #1890ff; }
+    .multi-select-item {
+      padding: 8px 12px;
+      display: flex; align-items: center; gap: 8px;
+      cursor: pointer;
+      font-size: 13px;
+      color: #333;
+      transition: background 0.15s;
+    }
+    .multi-select-item:hover { background: #f5f5f5; }
+    .multi-select-item .check { width: 16px; height: 16px; border: 1px solid #d9d9d9; border-radius: 3px; display: flex; align-items: center; justify-content: center; font-size: 10px; color: #fff; transition: all 0.15s; flex-shrink: 0; }
+    .multi-select-item.checked .check { background: #1890ff; border-color: #1890ff; }
+    .multi-select-item .item-info { display: flex; flex-direction: column; gap: 2px; }
+    .multi-select-item .item-name { font-weight: 500; }
+    .multi-select-item .item-creator { font-size: 11px; color: #999; }
+    .multi-select-empty { padding: 16px; text-align: center; font-size: 13px; color: #999; }
 
     /* Toast */
     .toast {
@@ -438,6 +470,7 @@
         <div class="nav-item"><i class="fas fa-history"></i> 策略命中记录</div>
         <div class="nav-item"><i class="fas fa-shield-alt"></i> 保护机制</div>
         <div class="nav-item"><i class="fas fa-cogs"></i> 功能中心</div>
+        <div class="nav-item"><i class="fas fa-lightbulb"></i> 创意工具</div>
       </div>
       <div class="nav-section">
         <div class="nav-item"><i class="fas fa-user-tie"></i> 媒介账户管理 <i class="fas fa-chevron-right arrow"></i></div>
@@ -521,13 +554,14 @@
                 <th>状态</th>
                 <th>更新时间</th>
                 <th>创建时间</th>
+                <th>更新人</th>
                 <th>操作</th>
               </tr>
             </thead>
             <tbody id="tableBody"></tbody>
           </table>
           <div class="pagination-wrap">
-            <span class="pagination-info">共 <span id="totalCount">703</span> 条</span>
+            <span class="pagination-info">共 <span id="totalCount">719</span> 条</span>
             <select class="page-size-select" id="pageSize">
               <option>10条/页</option>
               <option>20条/页</option>
@@ -559,29 +593,23 @@
         <!-- Step 1: Select type -->
         <div id="stepSelectType">
           <div class="upload-type-cards">
-            <div class="upload-card incremental" onclick="selectUploadType('incremental')">
-              <div class="check-mark"><i class="fas fa-check"></i></div>
+            <div class="upload-card incremental" onclick="triggerFileUpload('incremental')">
               <div class="card-icon"><i class="fas fa-plus-circle"></i></div>
               <div class="card-title">增量上传</div>
-              <div class="card-desc">在现有账号基础上<br>新增子账号</div>
+              <div class="card-desc">批量新增账号集<br>子账号配置</div>
             </div>
-            <div class="upload-card overwrite" onclick="selectUploadType('overwrite')">
-              <div class="check-mark"><i class="fas fa-check"></i></div>
+            <div class="upload-card overwrite" onclick="triggerFileUpload('overwrite')">
               <div class="card-icon"><i class="fas fa-sync-alt"></i></div>
               <div class="card-title">覆盖上传</div>
-              <div class="card-desc">用新文件完全覆盖<br>现有子账号</div>
+              <div class="card-desc">批量覆盖账户集<br>子账号配置</div>
             </div>
           </div>
+          <input type="file" id="fileInputIncremental" accept=".xlsx,.xls,.csv" class="hidden" onchange="handleFileSelect(event, 'incremental')">
+          <input type="file" id="fileInputOverwrite" accept=".xlsx,.xls,.csv" class="hidden" onchange="handleFileSelect(event, 'overwrite')">
           <div class="download-template">
             <button class="btn btn-default" onclick="downloadTemplate()">
               <i class="fas fa-file-excel"></i> 下载模板
             </button>
-          </div>
-          <div class="file-upload-area" id="dropZone">
-            <input type="file" id="fileInput" accept=".xlsx,.xls,.csv" onchange="handleFileSelect(event)">
-            <div class="upload-icon"><i class="fas fa-cloud-upload-alt"></i></div>
-            <div class="upload-text">点击或拖拽文件到此处上传</div>
-            <div class="upload-hint">支持 .xlsx, .xls, .csv 格式</div>
           </div>
         </div>
 
@@ -623,7 +651,7 @@
 
   <!-- Success Config Modal -->
   <div class="modal-overlay" id="configModal">
-    <div class="modal" style="width: 900px; max-height: 85vh;">
+    <div class="modal" style="width: 960px; max-height: 85vh;">
       <div class="modal-header">
         <div class="modal-title">增量上传结果 / 覆盖上传结果</div>
         <div class="modal-close" onclick="closeConfigModal()"><i class="fas fa-times"></i></div>
@@ -661,46 +689,44 @@
   <script>
     // ===================== Data =====================
     const tableData = [
-      { id: 1, name: '【hyf】杰悦', code: 'ZHJ010193', channel: '头条', count: 40, status: false, update: '2026-06-01 11:06:58', create: '2025-12-...' },
-      { id: 2, name: '火垣-银联', code: 'ZHJ010357', channel: '头条', count: 270, status: true, update: '2026-06-01 10:53:13', create: '2026-05-...' },
-      { id: 3, name: '【hpx】-江苏联通-1', code: 'ZHJ010195', channel: '头条', count: 6, status: true, update: '2026-05-31 13:18:56', create: '2025-12-...' },
-      { id: 4, name: '【hpx】-广东联通-1', code: 'ZHJ010099', channel: '头条', count: 26, status: true, update: '2026-05-28 18:57:44', create: '2025-10-...' },
-      { id: 5, name: '【CzH】-联通-广东联通-拉空', code: 'ZHJ010224', channel: '头条', count: 29, status: true, update: '2026-05-28 18:14:40', create: '2026-01-...' },
-      { id: 6, name: '【CzH】-移动-广东移动-拉空', code: 'ZHJ000207', channel: '头条', count: 29, status: true, update: '2026-05-28 18:13:41', create: '2025-08-...' },
-      { id: 7, name: '【CzH】-电信-广东电信-A1', code: 'ZHJ000104', channel: '头条', count: 26, status: true, update: '2026-05-28 18:13:35', create: '2025-08-...' },
-      { id: 8, name: '【CzH】-移动-河南-拉空-高出价', code: 'ZHJ000281', channel: '头条', count: 15, status: true, update: '2026-05-28 18:12:50', create: '2025-09-...' },
+      { id: 1, name: '【hpx】-湖南移动--3-高cpm', code: 'ZHJ000272', channel: '头条', count: 7, status: true, update: '2026-06-12 00:55:53', create: '2025-09-03 13:51:20', updater: '黄佩贤' },
+      { id: 2, name: '【hpx】-湖北移动-1', code: 'ZHJ000100', channel: '头条', count: 10, status: true, update: '2026-06-12 00:04:30', create: '2025-08-13 18:20:42', updater: '黄佩贤' },
+      { id: 3, name: '【hpx】-湖南移动-1', code: 'ZHJ000259', channel: '头条', count: 11, status: true, update: '2026-06-12 00:02:33', create: '2025-08-29 01:38:08', updater: '黄佩贤' },
+      { id: 4, name: '【hpx】-海南电信-1', code: 'ZHJ000117', channel: '头条', count: 3, status: true, update: '2026-06-12 00:01:10', create: '2025-08-13 19:15:12', updater: '黄佩贤' },
+      { id: 5, name: '【hpx】-贵州电信-1', code: 'ZHJ010364', channel: '头条', count: 2, status: true, update: '2026-06-12 00:00:12', create: '2026-05-12 17:47:39', updater: '黄佩贤' },
+      { id: 6, name: '【hpx】-广西移动-1', code: 'ZHJ000119', channel: '头条', count: 7, status: true, update: '2026-06-11 23:59:26', create: '2025-08-13 19:20:48', updater: '黄佩贤' },
+      { id: 7, name: '【hpx】-广西电信-1', code: 'ZHJ000121', channel: '头条', count: 10, status: true, update: '2026-06-11 23:57:49', create: '2025-08-13 19:27:38', updater: '黄佩贤' },
+      { id: 8, name: '【hpx】-广东移动-1', code: 'ZHJ000199', channel: '头条', count: 25, status: true, update: '2026-06-11 23:54:44', create: '2025-08-15 13:04:36', updater: '黄佩贤' },
+      { id: 9, name: '【hpx】-广东电信-1', code: 'ZHJ000127', channel: '头条', count: 15, status: true, update: '2026-06-11 23:48:22', create: '2025-08-13 19:51:32', updater: '黄佩贤' },
+      { id: 10, name: '【hpx】-甘肃移动-1', code: 'ZHJ000233', channel: '头条', count: 2, status: true, update: '2026-06-11 23:46:26', create: '2025-08-22 00:25:48', updater: '黄佩贤' },
     ];
 
-    const accountSetOptions = [
-      '请选择账户集',
-      '【hyf】杰悦',
-      '火垣-银联',
-      '【hpx】-江苏联通-1',
-      '【hpx】-广东联通-1',
-      '【CzH】-联通-广东联通-拉空',
-      '【CzH】-移动-广东移动-拉空',
-      '【CzH】-电信-广东电信-A1',
-      '【CzH】-移动-河南-拉空-高出价',
+    const accountSetList = [
+      { id: 'ZHJ000272', name: '【hpx】-湖南移动--3-高cpm', creator: '黄佩贤' },
+      { id: 'ZHJ000100', name: '【hpx】-湖北移动-1', creator: '黄佩贤' },
+      { id: 'ZHJ000259', name: '【hpx】-湖南移动-1', creator: '黄佩贤' },
+      { id: 'ZHJ000117', name: '【hpx】-海南电信-1', creator: '黄佩贤' },
+      { id: 'ZHJ010364', name: '【hpx】-贵州电信-1', creator: '黄佩贤' },
+      { id: 'ZHJ000119', name: '【hpx】-广西移动-1', creator: '黄佩贤' },
+      { id: 'ZHJ000121', name: '【hpx】-广西电信-1', creator: '黄佩贤' },
+      { id: 'ZHJ000199', name: '【hpx】-广东移动-1', creator: '黄佩贤' },
+      { id: 'ZHJ000127', name: '【hpx】-广东电信-1', creator: '黄佩贤' },
+      { id: 'ZHJ000233', name: '【hpx】-甘肃移动-1', creator: '黄佩贤' },
+      { id: 'ZHJ010193', name: '【hyf】杰悦', creator: '李明' },
+      { id: 'ZHJ010357', name: '火垣-银联', creator: '王芳' },
+      { id: 'ZHJ010195', name: '【hpx】-江苏联通-1', creator: '黄佩贤' },
+      { id: 'ZHJ010099', name: '【hpx】-广东联通-1', creator: '黄佩贤' },
+      { id: 'ZHJ010224', name: '【CzH】-联通-广东联通-拉空', creator: '张伟' },
+      { id: 'ZHJ000207', name: '【CzH】-移动-广东移动-拉空', creator: '张伟' },
+      { id: 'ZHJ000104', name: '【CzH】-电信-广东电信-A1', creator: '张伟' },
+      { id: 'ZHJ000281', name: '【CzH】-移动-河南-拉空-高出价', creator: '张伟' },
     ];
 
     const configData = [
-      { region: '广东', operator: '中国移动', optimizer: '测试', accounts: [
-        { id: 'ACC001', isNew: false },
-        { id: 'ACC002', isNew: true },
-      ]},
-      { region: '广西', operator: '中国联通', optimizer: '测试', accounts: [
-        { id: 'ACC003', isNew: true },
-      ]},
-      { region: '河南', operator: '中国移动', optimizer: '', accounts: [
-        { id: 'ACC006', isNew: false },
-        { id: 'ACC007', isNew: false },
-        { id: 'ACC008', isNew: true },
-      ]},
-      { region: '北京', operator: '中国电信', optimizer: '', accounts: [
-        { id: 'ACC004', isNew: false },
-        { id: 'ACC005', isNew: false },
-        { id: 'ACC009', isNew: true },
-      ]},
+      { region: '广东', operator: '中国移动', optimizer: '测试', accounts: ['ACC001', 'ACC002'] },
+      { region: '广西', operator: '中国联通', optimizer: '测试', accounts: ['ACC003'] },
+      { region: '河南', operator: '中国移动', optimizer: '', accounts: ['ACC006', 'ACC007', 'ACC008'] },
+      { region: '北京', operator: '中国电信', optimizer: '', accounts: ['ACC004', 'ACC005', 'ACC009'] },
     ];
 
     let selectedType = null;
@@ -720,6 +746,7 @@
           <td><div class="toggle-switch ${row.status ? 'on' : ''}" onclick="toggleStatus(${row.id})"></div></td>
           <td>${row.update}</td>
           <td>${row.create}</td>
+          <td>${row.updater}</td>
           <td>
             <div class="action-btns">
               <button class="btn btn-default"><i class="fas fa-edit"></i> 编辑</button>
@@ -756,10 +783,10 @@
     function openUploadModal() {
       selectedType = null;
       currentFile = null;
-      document.querySelectorAll('.upload-card').forEach(c => c.classList.remove('selected'));
       document.getElementById('stepSelectType').classList.remove('hidden');
       document.getElementById('uploadProgress').classList.remove('show');
-      document.getElementById('fileInput').value = '';
+      document.getElementById('fileInputIncremental').value = '';
+      document.getElementById('fileInputOverwrite').value = '';
       document.getElementById('uploadModal').classList.add('show');
     }
 
@@ -767,10 +794,10 @@
       document.getElementById('uploadModal').classList.remove('show');
     }
 
-    function selectUploadType(type) {
+    function triggerFileUpload(type) {
       selectedType = type;
-      document.querySelectorAll('.upload-card').forEach(c => c.classList.remove('selected'));
-      document.querySelector(`.upload-card.${type}`).classList.add('selected');
+      const inputId = type === 'incremental' ? 'fileInputIncremental' : 'fileInputOverwrite';
+      document.getElementById(inputId).click();
     }
 
     // ===================== Download Template =====================
@@ -795,29 +822,13 @@
     }
 
     // ===================== File Upload =====================
-    function handleFileSelect(e) {
+    function handleFileSelect(e, type) {
       const file = e.target.files[0];
       if (!file) return;
-      if (!selectedType) {
-        showToast('请先选择上传类型（增量上传或覆盖上传）', 'error');
-        e.target.value = '';
-        return;
-      }
+      selectedType = type;
       currentFile = file;
       startUpload();
     }
-
-    // Drag & drop
-    const dropZone = document.getElementById('dropZone');
-    dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.classList.add('dragover'); });
-    dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragover'));
-    dropZone.addEventListener('drop', (e) => {
-      e.preventDefault();
-      dropZone.classList.remove('dragover');
-      if (!selectedType) { showToast('请先选择上传类型', 'error'); return; }
-      const file = e.dataTransfer.files[0];
-      if (file) { currentFile = file; startUpload(); }
-    });
 
     function startUpload() {
       document.getElementById('stepSelectType').classList.add('hidden');
@@ -832,7 +843,6 @@
           progress = 100;
           clearInterval(interval);
           setTimeout(() => {
-            // Random success or fail for demo
             const isFail = Math.random() > 0.7;
             if (isFail) {
               closeUploadModal();
@@ -876,34 +886,156 @@
       openUploadModal();
     }
 
+    // ===================== Multi-Select Dropdown Component =====================
+    function createMultiSelect(container, options, onChange) {
+      let selected = [];
+      let search = '';
+
+      const wrap = document.createElement('div');
+      wrap.className = 'multi-select-wrap';
+
+      const trigger = document.createElement('div');
+      trigger.className = 'multi-select-trigger';
+      trigger.innerHTML = '<span class="placeholder">请选择账户集</span><i class="fas fa-chevron-down" style="font-size:10px;color:#999;"></i>';
+
+      const dropdown = document.createElement('div');
+      dropdown.className = 'multi-select-dropdown';
+
+      const searchBox = document.createElement('div');
+      searchBox.className = 'multi-select-search';
+      searchBox.innerHTML = '<input type="text" placeholder="搜索账户集名称 / 创建人">';
+      const searchInput = searchBox.querySelector('input');
+
+      const list = document.createElement('div');
+      list.className = 'multi-select-list';
+
+      dropdown.appendChild(searchBox);
+      dropdown.appendChild(list);
+      wrap.appendChild(trigger);
+      wrap.appendChild(dropdown);
+      container.appendChild(wrap);
+
+      function renderList() {
+        const filtered = options.filter(opt => {
+          if (!search) return true;
+          const s = search.toLowerCase();
+          return opt.name.toLowerCase().includes(s) || opt.creator.toLowerCase().includes(s);
+        });
+
+        if (filtered.length === 0) {
+          list.innerHTML = '<div class="multi-select-empty">暂无匹配结果</div>';
+          return;
+        }
+
+        list.innerHTML = filtered.map(opt => {
+          const isChecked = selected.includes(opt.id);
+          return `
+            <div class="multi-select-item ${isChecked ? 'checked' : ''}" data-id="${opt.id}">
+              <div class="check"><i class="fas fa-check"></i></div>
+              <div class="item-info">
+                <span class="item-name">${opt.name}</span>
+                <span class="item-creator">创建人：${opt.creator}</span>
+              </div>
+            </div>
+          `;
+        }).join('');
+
+        list.querySelectorAll('.multi-select-item').forEach(item => {
+          item.addEventListener('click', () => {
+            const id = item.dataset.id;
+            if (selected.includes(id)) {
+              selected = selected.filter(s => s !== id);
+            } else {
+              selected.push(id);
+            }
+            updateTrigger();
+            renderList();
+            if (onChange) onChange(selected);
+          });
+        });
+      }
+
+      function updateTrigger() {
+        if (selected.length === 0) {
+          trigger.innerHTML = '<span class="placeholder">请选择账户集</span><i class="fas fa-chevron-down" style="font-size:10px;color:#999;"></i>';
+        } else {
+          const tags = selected.map(id => {
+            const opt = options.find(o => o.id === id);
+            return `<span class="tag">${opt ? opt.name : id}</span>`;
+          }).join('');
+          trigger.innerHTML = `<div class="tags">${tags}</div><i class="fas fa-chevron-down" style="font-size:10px;color:#999;flex-shrink:0;"></i>`;
+        }
+      }
+
+      trigger.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const isOpen = dropdown.classList.contains('show');
+        document.querySelectorAll('.multi-select-dropdown').forEach(d => d.classList.remove('show'));
+        document.querySelectorAll('.multi-select-trigger').forEach(t => t.classList.remove('open'));
+        if (!isOpen) {
+          dropdown.classList.add('show');
+          trigger.classList.add('open');
+          searchInput.focus();
+        }
+      });
+
+      searchInput.addEventListener('input', (e) => {
+        search = e.target.value;
+        renderList();
+      });
+
+      document.addEventListener('click', (e) => {
+        if (!wrap.contains(e.target)) {
+          dropdown.classList.remove('show');
+          trigger.classList.remove('open');
+        }
+      });
+
+      renderList();
+
+      return {
+        getSelected: () => selected,
+        setSelected: (vals) => { selected = vals; updateTrigger(); renderList(); }
+      };
+    }
+
     // ===================== Config Modal =====================
     function showConfigModal() {
       configSelections = {};
       const tbody = document.getElementById('configTableBody');
-      tbody.innerHTML = configData.map((group, idx) => {
-        const options = accountSetOptions.map(opt =>
-          `<option value="${opt}" ${opt === '请选择账户集' ? 'selected' : ''}>${opt}</option>`
-        ).join('');
-        const tags = group.accounts.map(acc => `
-          <span class="account-tag ${acc.isNew ? 'new' : ''}">
-            ${acc.isNew ? '<span class="tag-dot"></span>' : ''}
-            ${acc.id}${acc.isNew ? ' <small style="opacity:0.7">(新增)</small>' : ''}
-          </span>
-        `).join('');
-        return `
-          <tr data-group="${idx}">
-            <td>
-              <select class="account-select" onchange="onConfigSelect(${idx}, this.value)">
-                ${options}
-              </select>
-            </td>
-            <td>${group.region}</td>
-            <td>${group.operator}</td>
-            <td>${group.optimizer || '-'}</td>
-            <td><div class="account-tags">${tags}</div></td>
-          </tr>
-        `;
-      }).join('');
+      tbody.innerHTML = '';
+
+      configData.forEach((group, idx) => {
+        const tr = document.createElement('tr');
+        tr.dataset.group = idx;
+
+        // Account set selection cell
+        const selectCell = document.createElement('td');
+        const multiSelect = createMultiSelect(selectCell, accountSetList, (selected) => {
+          configSelections[idx] = selected.length > 0 ? selected : null;
+          updateConfigStatus();
+        });
+        tr.appendChild(selectCell);
+
+        // Other cells
+        const regionCell = document.createElement('td');
+        regionCell.textContent = group.region;
+        tr.appendChild(regionCell);
+
+        const operatorCell = document.createElement('td');
+        operatorCell.textContent = group.operator;
+        tr.appendChild(operatorCell);
+
+        const optimizerCell = document.createElement('td');
+        optimizerCell.textContent = group.optimizer || '-';
+        tr.appendChild(optimizerCell);
+
+        const accountsCell = document.createElement('td');
+        accountsCell.innerHTML = `<div class="account-tags">${group.accounts.map(acc => `<span class="account-tag">${acc}</span>`).join('')}</div>`;
+        tr.appendChild(accountsCell);
+
+        tbody.appendChild(tr);
+      });
 
       document.getElementById('totalGroup').textContent = configData.length;
       const totalAccs = configData.reduce((sum, g) => sum + g.accounts.length, 0);
@@ -916,13 +1048,8 @@
       document.getElementById('configModal').classList.remove('show');
     }
 
-    function onConfigSelect(groupIdx, value) {
-      configSelections[groupIdx] = value !== '请选择账户集' ? value : null;
-      updateConfigStatus();
-    }
-
     function updateConfigStatus() {
-      const configured = Object.values(configSelections).filter(v => v).length;
+      const configured = Object.values(configSelections).filter(v => v && v.length > 0).length;
       const total = configData.length;
       document.getElementById('configuredCount').textContent = configured;
 
