@@ -64,10 +64,7 @@
       position: relative;
     }
     .nav-item:hover { color: #1890ff; background: #f0f7ff; }
-    .nav-item.active {
-      color: #fff;
-      background: #1890ff;
-    }
+    .nav-item.active { color: #fff; background: #1890ff; }
     .nav-item .arrow { margin-left: auto; font-size: 10px; color: #ccc; }
     .nav-item i { width: 16px; text-align: center; color: #999; }
     .nav-item:hover i { color: #1890ff; }
@@ -88,10 +85,7 @@
     .breadcrumb a:hover { color: #1890ff; }
     .breadcrumb .sep { color: #ccc; }
     .breadcrumb .current { color: #1890ff; font-weight: 500; }
-    .user-info {
-      display: flex; align-items: center; gap: 12px;
-      font-size: 14px; color: #666;
-    }
+    .user-info { display: flex; align-items: center; gap: 12px; font-size: 14px; color: #666; }
     .user-avatar {
       width: 32px; height: 32px;
       border-radius: 50%;
@@ -149,13 +143,8 @@
     .toolbar { margin-bottom: 16px; display: flex; gap: 8px; }
 
     /* Table */
-    .table-wrap {
-      background: #fff;
-      border-radius: 4px;
-      overflow: hidden;
-    }
+    .table-wrap { background: #fff; border-radius: 4px; overflow: hidden; }
     table { width: 100%; border-collapse: collapse; font-size: 14px; }
-    /* Table header */
     th, td { padding: 12px 16px; text-align: left; border-bottom: 1px solid #f0f0f0; }
     th { font-weight: 500; color: #666; border-bottom: 2px solid #f0f0f0; }
     td { color: #333; }
@@ -184,21 +173,14 @@
     .action-btns .btn { padding: 4px 8px; font-size: 13px; }
 
     /* Pagination */
-    .pagination-wrap {
-      display: flex; justify-content: flex-end; align-items: center;
-      padding: 16px 24px; gap: 8px;
-    }
+    .pagination-wrap { display: flex; justify-content: flex-end; align-items: center; padding: 16px 24px; gap: 8px; }
     .pagination-info { font-size: 14px; color: #666; margin-right: 8px; }
     .page-size-select { padding: 4px 8px; border: 1px solid #d9d9d9; border-radius: 4px; font-size: 14px; }
     .page-btn {
       min-width: 32px; height: 32px;
       display: flex; align-items: center; justify-content: center;
-      border: 1px solid #d9d9d9;
-      background: #fff;
-      border-radius: 4px;
-      cursor: pointer;
-      font-size: 14px;
-      color: #666;
+      border: 1px solid #d9d9d9; background: #fff;
+      border-radius: 4px; cursor: pointer; font-size: 14px; color: #666;
       transition: all 0.2s;
     }
     .page-btn:hover { border-color: #1890ff; color: #1890ff; }
@@ -210,19 +192,15 @@
       position: fixed; top: 0; left: 0; right: 0; bottom: 0;
       background: rgba(0,0,0,0.45);
       display: flex; align-items: center; justify-content: center;
-      z-index: 1000;
-      opacity: 0; pointer-events: none;
+      z-index: 1000; opacity: 0; pointer-events: none;
       transition: opacity 0.2s;
     }
     .modal-overlay.show { opacity: 1; pointer-events: auto; }
     .modal {
-      background: #fff;
-      border-radius: 8px;
+      background: #fff; border-radius: 8px;
       box-shadow: 0 4px 20px rgba(0,0,0,0.15);
-      max-height: 90vh;
-      overflow-y: auto;
-      transform: scale(0.95);
-      transition: transform 0.2s;
+      max-height: 90vh; overflow-y: auto;
+      transform: scale(0.95); transition: transform 0.2s;
       position: relative;
     }
     .modal-overlay.show .modal { transform: scale(1); }
@@ -233,114 +211,75 @@
     }
     .modal-title { font-size: 16px; font-weight: 600; color: #333; }
     .modal-close {
-      width: 28px; height: 28px;
-      border-radius: 4px;
+      width: 28px; height: 28px; border-radius: 4px;
       display: flex; align-items: center; justify-content: center;
-      cursor: pointer; color: #999;
-      transition: all 0.2s;
+      cursor: pointer; color: #999; transition: all 0.2s;
     }
     .modal-close:hover { background: #f5f5f5; color: #333; }
     .modal-body { padding: 24px; }
     .modal-footer {
-      padding: 12px 24px;
-      border-top: 1px solid #f0f0f0;
+      padding: 12px 24px; border-top: 1px solid #f0f0f0;
       display: flex; justify-content: flex-end; gap: 8px;
     }
 
-    /* Upload type cards */
-    .upload-type-cards { display: flex; gap: 24px; justify-content: center; }
+    /* Upload modal layout */
+    .upload-modal-body { position: relative; }
+    .upload-top-bar {
+      display: flex; justify-content: space-between; align-items: flex-start;
+      margin-bottom: 28px;
+    }
+    .upload-tip { font-size: 13px; color: #999; max-width: 360px; line-height: 1.6; }
+    .upload-tip i { color: #1890ff; margin-right: 4px; }
+    .upload-type-cards { display: flex; gap: 32px; justify-content: center; }
     .upload-card {
-      flex: 1; max-width: 240px;
+      flex: 1; max-width: 260px;
       border: 2px solid #e8e8e8;
-      border-radius: 8px;
-      padding: 24px;
-      text-align: center;
-      cursor: pointer;
-      transition: all 0.2s;
-      position: relative;
+      border-radius: 8px; padding: 28px 24px;
+      text-align: center; cursor: pointer;
+      transition: all 0.2s; position: relative;
     }
     .upload-card:hover { border-color: #bfbfbf; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
     .upload-card.incremental:hover { border-color: #1890ff; }
     .upload-card.overwrite:hover { border-color: #fa8c16; }
     .upload-card .card-icon {
-      width: 56px; height: 56px;
-      border-radius: 50%;
+      width: 56px; height: 56px; border-radius: 50%;
       display: flex; align-items: center; justify-content: center;
-      font-size: 24px;
-      margin: 0 auto 12px;
+      font-size: 24px; margin: 0 auto 14px;
     }
     .upload-card.incremental .card-icon { background: #e6f7ff; color: #1890ff; }
     .upload-card.overwrite .card-icon { background: #fff7e6; color: #fa8c16; }
-    .upload-card .card-title { font-size: 16px; font-weight: 600; margin-bottom: 8px; }
+    .upload-card .card-title { font-size: 16px; font-weight: 600; margin-bottom: 10px; }
     .upload-card.incremental .card-title { color: #1890ff; }
     .upload-card.overwrite .card-title { color: #fa8c16; }
-    .upload-card .card-desc { font-size: 13px; color: #999; line-height: 1.5; }
-
-    .download-template {
-      display: flex; justify-content: flex-end; margin-bottom: 16px;
-    }
-    .download-template .btn { font-size: 13px; }
+    .upload-card .card-desc { font-size: 13px; color: #999; line-height: 1.6; }
 
     /* Progress */
-    .upload-progress {
-      display: none;
-      padding: 40px;
-      text-align: center;
-    }
+    .upload-progress { display: none; padding: 40px; text-align: center; }
     .upload-progress.show { display: block; }
-    .progress-bar-wrap {
-      width: 100%; height: 8px;
-      background: #f0f0f0;
-      border-radius: 4px;
-      overflow: hidden;
-      margin: 16px 0;
-    }
-    .progress-bar {
-      height: 100%;
-      background: #1890ff;
-      border-radius: 4px;
-      transition: width 0.3s;
-      width: 0%;
-    }
+    .progress-bar-wrap { width: 100%; height: 8px; background: #f0f0f0; border-radius: 4px; overflow: hidden; margin: 16px 0; }
+    .progress-bar { height: 100%; background: #1890ff; border-radius: 4px; transition: width 0.3s; width: 0%; }
     .progress-text { font-size: 14px; color: #666; }
     .progress-warning {
-      margin-top: 12px;
-      padding: 8px 16px;
-      background: #fff2f0;
-      border: 1px solid #ffccc7;
-      border-radius: 4px;
-      color: #cf1322;
-      font-size: 13px;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
+      margin-top: 12px; padding: 8px 16px;
+      background: #fff2f0; border: 1px solid #ffccc7;
+      border-radius: 4px; color: #cf1322;
+      font-size: 13px; display: inline-flex; align-items: center; gap: 6px;
     }
 
     /* Result table in config modal */
     .config-table { width: 100%; border-collapse: collapse; font-size: 13px; }
     .config-table th {
-      background: #fafafa;
-      padding: 10px 12px;
-      text-align: left;
-      font-weight: 500;
-      color: #666;
-      border-bottom: 1px solid #f0f0f0;
-      font-size: 12px;
+      background: #fafafa; padding: 10px 12px; text-align: left;
+      font-weight: 500; color: #666; border-bottom: 1px solid #f0f0f0;
+      font-size: 12px; white-space: nowrap;
     }
-    .config-table td {
-      padding: 12px;
-      border-bottom: 1px solid #f0f0f0;
-      vertical-align: middle;
-    }
+    .config-table td { padding: 12px; border-bottom: 1px solid #f0f0f0; vertical-align: middle; }
     .config-table tr:hover td { background: #fafafa; }
     .account-tags { display: flex; flex-wrap: wrap; gap: 6px; }
     .account-tag {
       display: inline-flex; align-items: center; gap: 4px;
-      padding: 2px 8px;
-      border-radius: 4px;
-      font-size: 12px;
-      background: #f0f0f0;
-      color: #666;
+      padding: 2px 8px; border-radius: 4px;
+      font-size: 12px; background: #f0f0f0; color: #666;
     }
     .config-footer-status {
       display: flex; align-items: center; justify-content: space-between;
@@ -354,82 +293,47 @@
     .fail-reasons { margin-bottom: 16px; }
     .fail-reason-item {
       display: flex; align-items: flex-start; gap: 8px;
-      padding: 10px 12px;
-      background: #fff2f0;
-      border: 1px solid #ffccc7;
-      border-radius: 4px;
-      margin-bottom: 8px;
-      font-size: 13px;
-      color: #cf1322;
+      padding: 10px 12px; background: #fff2f0;
+      border: 1px solid #ffccc7; border-radius: 4px;
+      margin-bottom: 8px; font-size: 13px; color: #cf1322;
     }
-    .fail-reason-item i { margin-top: 2px; }
+    .fail-reason-item i { margin-top: 2px; flex-shrink: 0; }
 
     /* Multi-select dropdown */
     .multi-select-wrap { position: relative; display: inline-block; }
     .multi-select-trigger {
-      min-width: 180px;
-      padding: 6px 12px;
-      border: 1px solid #d9d9d9;
-      border-radius: 4px;
-      background: #fff;
-      font-size: 13px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 8px;
-      color: #666;
-      transition: border-color 0.2s;
+      min-width: 180px; padding: 6px 12px;
+      border: 1px solid #d9d9d9; border-radius: 4px;
+      background: #fff; font-size: 13px; cursor: pointer;
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 8px; color: #666; transition: border-color 0.2s;
     }
     .multi-select-trigger:hover, .multi-select-trigger.open { border-color: #1890ff; }
     .multi-select-trigger .placeholder { color: #999; }
-    .multi-select-trigger .tags {
-      display: flex; flex-wrap: wrap; gap: 4px;
-      max-width: 240px; overflow: hidden;
-    }
-    .multi-select-trigger .tag {
-      background: #e6f7ff;
-      color: #1890ff;
-      padding: 1px 6px;
-      border-radius: 3px;
-      font-size: 12px;
-      white-space: nowrap;
-    }
+    .multi-select-trigger .tags { display: flex; flex-wrap: wrap; gap: 4px; max-width: 240px; overflow: hidden; }
+    .multi-select-trigger .tag { background: #e6f7ff; color: #1890ff; padding: 1px 6px; border-radius: 3px; font-size: 12px; white-space: nowrap; }
     .multi-select-dropdown {
       position: absolute; top: 100%; left: 0;
-      min-width: 280px;
-      background: #fff;
-      border: 1px solid #d9d9d9;
-      border-radius: 4px;
+      min-width: 280px; background: #fff;
+      border: 1px solid #d9d9d9; border-radius: 4px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.12);
-      z-index: 100;
-      margin-top: 4px;
-      display: none;
-      max-height: 320px;
-      overflow-y: auto;
+      z-index: 100; margin-top: 4px;
+      display: none; max-height: 320px; overflow-y: auto;
     }
     .multi-select-dropdown.show { display: block; }
     .multi-select-search {
-      padding: 8px 12px;
-      border-bottom: 1px solid #f0f0f0;
+      padding: 8px 12px; border-bottom: 1px solid #f0f0f0;
       position: sticky; top: 0; background: #fff; z-index: 2;
     }
     .multi-select-search input {
-      width: 100%;
-      padding: 6px 10px;
-      border: 1px solid #d9d9d9;
-      border-radius: 4px;
-      font-size: 13px;
-      outline: none;
+      width: 100%; padding: 6px 10px;
+      border: 1px solid #d9d9d9; border-radius: 4px;
+      font-size: 13px; outline: none;
     }
     .multi-select-search input:focus { border-color: #1890ff; }
     .multi-select-item {
-      padding: 8px 12px;
-      display: flex; align-items: center; gap: 8px;
-      cursor: pointer;
-      font-size: 13px;
-      color: #333;
-      transition: background 0.15s;
+      padding: 8px 12px; display: flex; align-items: center; gap: 8px;
+      cursor: pointer; font-size: 13px; color: #333; transition: background 0.15s;
     }
     .multi-select-item:hover { background: #f5f5f5; }
     .multi-select-item .check { width: 16px; height: 16px; border: 1px solid #d9d9d9; border-radius: 3px; display: flex; align-items: center; justify-content: center; font-size: 10px; color: #fff; transition: all 0.15s; flex-shrink: 0; }
@@ -442,13 +346,9 @@
     /* Toast */
     .toast {
       position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
-      padding: 10px 20px;
-      border-radius: 4px;
-      font-size: 14px;
-      color: #fff;
-      z-index: 2000;
-      opacity: 0; pointer-events: none;
-      transition: opacity 0.3s;
+      padding: 10px 20px; border-radius: 4px;
+      font-size: 14px; color: #fff;
+      z-index: 2000; opacity: 0; pointer-events: none; transition: opacity 0.3s;
     }
     .toast.show { opacity: 1; }
     .toast.success { background: #52c41a; }
@@ -588,13 +488,23 @@
 
   <!-- Upload Modal -->
   <div class="modal-overlay" id="uploadModal">
-    <div class="modal" style="width: 640px;">
+    <div class="modal" style="width: 680px;">
       <div class="modal-header">
         <div class="modal-title">批量上传子账号</div>
         <div class="modal-close" onclick="closeUploadModal()"><i class="fas fa-times"></i></div>
       </div>
-      <div class="modal-body">
-        <!-- Step 1: Select type -->
+      <div class="modal-body upload-modal-body">
+        <!-- Top bar: tip + download -->
+        <div class="upload-top-bar">
+          <div class="upload-tip">
+            <div><i class="fas fa-info-circle"></i> 请先下载模板，按模板格式填写后再上传</div>
+          </div>
+          <button class="btn btn-default" onclick="downloadTemplate()" style="font-size: 13px;">
+            <i class="fas fa-file-excel"></i> 下载模板
+          </button>
+        </div>
+
+        <!-- Step 1: Select upload type -->
         <div id="stepSelectType">
           <div class="upload-type-cards">
             <div class="upload-card incremental" onclick="triggerFileUpload('incremental')">
@@ -610,22 +520,15 @@
           </div>
           <input type="file" id="fileInputIncremental" accept=".xlsx,.xls,.csv" class="hidden" onchange="handleFileSelect(event, 'incremental')">
           <input type="file" id="fileInputOverwrite" accept=".xlsx,.xls,.csv" class="hidden" onchange="handleFileSelect(event, 'overwrite')">
-          <div class="download-template">
-            <button class="btn btn-default" onclick="downloadTemplate()">
-              <i class="fas fa-file-excel"></i> 下载模板
-            </button>
-          </div>
         </div>
 
         <!-- Step 2: Upload progress -->
         <div class="upload-progress" id="uploadProgress">
-          <div class="upload-icon" style="font-size: 40px; color: #1890ff; margin-bottom: 16px;">
+          <div style="font-size: 40px; color: #1890ff; margin-bottom: 16px;">
             <i class="fas fa-spinner fa-spin"></i>
           </div>
           <div class="progress-text">正在上传文件... <span id="progressPercent">0%</span></div>
-          <div class="progress-bar-wrap">
-            <div class="progress-bar" id="progressBar"></div>
-          </div>
+          <div class="progress-bar-wrap"><div class="progress-bar" id="progressBar"></div></div>
           <div class="progress-warning">
             <i class="fas fa-exclamation-triangle"></i>
             上传中，请勿刷新页面
@@ -637,7 +540,7 @@
 
   <!-- Fail Modal -->
   <div class="modal-overlay" id="failModal">
-    <div class="modal" style="width: 520px;">
+    <div class="modal" style="width: 560px;">
       <div class="modal-header">
         <div class="modal-title" style="color: #cf1322;"><i class="fas fa-times-circle"></i> 上传失败</div>
         <div class="modal-close" onclick="closeFailModal()"><i class="fas fa-times"></i></div>
@@ -655,12 +558,12 @@
 
   <!-- Success Config Modal -->
   <div class="modal-overlay" id="configModal">
-    <div class="modal" style="width: 960px; max-height: 85vh;">
+    <div class="modal" style="width: 1200px; max-height: 90vh;">
       <div class="modal-header">
-        <div class="modal-title">增量上传结果 / 覆盖上传结果</div>
+        <div class="modal-title" id="configModalTitle">增量上传结果</div>
         <div class="modal-close" onclick="closeConfigModal()"><i class="fas fa-times"></i></div>
       </div>
-      <div class="modal-body" style="padding: 16px 24px;">
+      <div class="modal-body" style="padding: 16px 24px; overflow-x: auto;">
         <table class="config-table">
           <thead>
             <tr>
@@ -675,7 +578,7 @@
         </table>
         <div class="config-footer-status">
           <div class="status-text" id="configStatus">
-            已完成配置：<span id="configuredCount">0</span> / <span id="totalGroup">4</span> 个分类，共 <span id="totalAccounts">9</span> 个子账户
+            已完成配置：<span id="configuredCount">0</span> / <span id="totalGroup">0</span> 个分类，共 <span id="totalAccounts">0</span> 个子账户
             <span class="warning" id="configWarning"><i class="fas fa-exclamation-triangle"></i> 存在未配置账户集的账户，无法保存</span>
           </div>
         </div>
@@ -726,15 +629,12 @@
       { id: 'ZHJ000281', name: '【CzH】-移动-河南-拉空-高出价', creator: '张伟' },
     ];
 
-    const configData = [
-      { region: '广东', operator: '中国移动', optimizer: '测试', accounts: ['ACC001', 'ACC002'] },
-      { region: '广西', operator: '中国联通', optimizer: '测试', accounts: ['ACC003'] },
-      { region: '河南', operator: '中国移动', optimizer: '', accounts: ['ACC006', 'ACC007', 'ACC008'] },
-      { region: '北京', operator: '中国电信', optimizer: '', accounts: ['ACC004', 'ACC005', 'ACC009'] },
-    ];
+    // Valid values
+    const VALID_CHANNELS = ['头条', '百度', '腾讯'];
+    const VALID_OPERATORS = ['中国移动', '中国联通', '中国电信'];
 
-    let selectedType = null;
-    let currentFile = null;
+    let currentUploadType = null; // 'incremental' or 'overwrite'
+    let parsedConfigData = [];  // data parsed from uploaded file
     let configSelections = {};
 
     // ===================== Render Table =====================
@@ -775,18 +675,12 @@
       renderTable();
     }
 
-    function doSearch() {
-      showToast('查询完成', 'success');
-    }
-
-    function changePage(dir) {
-      // stub
-    }
+    function doSearch() { showToast('查询完成', 'success'); }
+    function changePage(dir) {}
 
     // ===================== Upload Modal =====================
     function openUploadModal() {
-      selectedType = null;
-      currentFile = null;
+      currentUploadType = null;
       document.getElementById('stepSelectType').classList.remove('hidden');
       document.getElementById('uploadProgress').classList.remove('show');
       document.getElementById('fileInputIncremental').value = '';
@@ -799,7 +693,7 @@
     }
 
     function triggerFileUpload(type) {
-      selectedType = type;
+      currentUploadType = type;
       const inputId = type === 'incremental' ? 'fileInputIncremental' : 'fileInputOverwrite';
       document.getElementById(inputId).click();
     }
@@ -825,19 +719,157 @@
       showToast('模板下载成功', 'success');
     }
 
-    // ===================== File Upload =====================
+    // ===================== File Upload + Real Validation =====================
     function handleFileSelect(e, type) {
       const file = e.target.files[0];
       if (!file) return;
-      selectedType = type;
-      currentFile = file;
-      startUpload();
-    }
+      currentUploadType = type;
 
-    function startUpload() {
+      // Show progress
       document.getElementById('stepSelectType').classList.add('hidden');
       document.getElementById('uploadProgress').classList.add('show');
 
+      // Simulate upload progress
+      let progress = 0;
+      const bar = document.getElementById('progressBar');
+      const pct = document.getElementById('progressPercent');
+      const interval = setInterval(() => {
+        progress += Math.random() * 15 + 5;
+        if (progress > 90) progress = 90;
+        bar.style.width = progress + '%';
+        pct.textContent = Math.floor(progress) + '%';
+      }, 200);
+
+      // Read and validate file
+      const reader = new FileReader();
+      reader.onload = function(evt) {
+        try {
+          const data = new Uint8Array(evt.target.result);
+          const workbook = XLSX.read(data, { type: 'array' });
+          const sheetName = workbook.SheetNames[0];
+          const sheet = workbook.Sheets[sheetName];
+          const jsonData = XLSX.utils.sheet_to_json(sheet, { header: 1, defval: '' });
+
+          // Complete progress
+          clearInterval(interval);
+          bar.style.width = '100%';
+          pct.textContent = '100%';
+
+          setTimeout(() => {
+            const errors = validateExcelData(jsonData);
+            if (errors.length > 0) {
+              closeUploadModal();
+              showFailModal(errors);
+            } else {
+              // Parse data into config groups
+              parsedConfigData = groupUploadedData(jsonData);
+              closeUploadModal();
+              showConfigModal();
+            }
+          }, 500);
+        } catch (err) {
+          clearInterval(interval);
+          closeUploadModal();
+          showFailModal(['文件解析失败，请确认文件格式是否正确（支持 .xlsx / .xls / .csv）']);
+        }
+      };
+      reader.onerror = function() {
+        clearInterval(interval);
+        closeUploadModal();
+        showFailModal(['文件读取失败，请重试']);
+      };
+      reader.readAsArrayBuffer(file);
+    }
+
+    function validateExcelData(jsonData) {
+      const errors = [];
+
+      // Check if file is empty
+      if (!jsonData || jsonData.length < 2) {
+        errors.push('文件内容为空或仅包含表头，请填写数据后重新上传');
+        return errors;
+      }
+
+      // Validate header
+      const header = jsonData[0];
+      const expectedHeader = ['渠道', '账号ID', '省份', '运营商', '优化师'];
+      const headerOk = expectedHeader.every((h, i) => String(header[i] || '').trim() === h);
+      if (!headerOk) {
+        errors.push('文件表头格式不正确，请使用下载的模板填写（表头：渠道、账号ID、省份、运营商、优化师）');
+        return errors;
+      }
+
+      // Validate each data row
+      for (let i = 1; i < jsonData.length; i++) {
+        const row = jsonData[i];
+        const rowNum = i + 1;
+
+        const channel = String(row[0] || '').trim();
+        const accountId = String(row[1] || '').trim();
+        const province = String(row[2] || '').trim();
+        const operator = String(row[3] || '').trim();
+        // optimizer is optional, no validation needed
+
+        if (!channel) {
+          errors.push(`第${rowNum}行：渠道不能为空`);
+        } else if (!VALID_CHANNELS.includes(channel)) {
+          errors.push(`第${rowNum}行：渠道"${channel}"不在允许范围内，请使用：头条、百度、腾讯`);
+        }
+
+        if (!accountId) {
+          errors.push(`第${rowNum}行：账号ID不能为空`);
+        }
+
+        if (!province) {
+          errors.push(`第${rowNum}行：省份不能为空`);
+        }
+
+        if (!operator) {
+          errors.push(`第${rowNum}行：运营商不能为空`);
+        } else if (!VALID_OPERATORS.includes(operator)) {
+          errors.push(`第${rowNum}行：运营商"${operator}"填写错误，应为：中国移动、中国联通、中国电信`);
+        }
+      }
+
+      return errors;
+    }
+
+    function groupUploadedData(jsonData) {
+      // Skip header row
+      const rows = jsonData.slice(1);
+      // Group by province + operator
+      const groups = {};
+      rows.forEach((row, idx) => {
+        const province = String(row[2] || '').trim();
+        const operator = String(row[3] || '').trim();
+        const accountId = String(row[1] || '').trim();
+        const optimizer = String(row[4] || '').trim();
+
+        const key = `${province}|${operator}`;
+        if (!groups[key]) {
+          groups[key] = {
+            region: province,
+            operator: operator,
+            optimizer: optimizer,
+            accounts: []
+          };
+        }
+        if (accountId) {
+          groups[key].accounts.push(accountId);
+        }
+        // Update optimizer if present
+        if (optimizer) {
+          groups[key].optimizer = optimizer;
+        }
+      });
+
+      return Object.values(groups);
+    }
+
+    // ===================== Upload Progress =====================
+    function startUploadFake() {
+      document.getElementById('stepSelectType').classList.add('hidden');
+      document.getElementById('uploadProgress').classList.add('show');
       let progress = 0;
       const bar = document.getElementById('progressBar');
       const pct = document.getElementById('progressPercent');
@@ -847,14 +879,8 @@
           progress = 100;
           clearInterval(interval);
           setTimeout(() => {
-            const isFail = Math.random() > 0.7;
-            if (isFail) {
-              closeUploadModal();
-              showFailModal();
-            } else {
-              closeUploadModal();
-              showConfigModal();
-            }
+            closeUploadModal();
+            showConfigModal();
           }, 500);
         }
         bar.style.width = progress + '%';
@@ -863,14 +889,8 @@
     }
 
     // ===================== Fail Modal =====================
-    function showFailModal() {
-      const reasons = [
-        '第3行：账号ID格式不正确，应为字母+数字组合',
-        '第7行：省份字段不能为空',
-        '第12行：渠道类型"抖音"不在允许范围内，请使用：头条、百度、腾讯',
-        '第15行：运营商字段填写错误，应为：中国移动、中国联通、中国电信',
-      ];
-      document.getElementById('failReasons').innerHTML = reasons.map(r => `
+    function showFailModal(errors) {
+      document.getElementById('failReasons').innerHTML = errors.map(r => `
         <div class="fail-reason-item"><i class="fas fa-times-circle"></i> ${r}</div>
       `).join('');
       document.getElementById('failModal').classList.add('show');
@@ -1006,14 +1026,16 @@
     // ===================== Config Modal =====================
     function showConfigModal() {
       configSelections = {};
+      const title = currentUploadType === 'incremental' ? '增量上传结果' : '覆盖上传结果';
+      document.getElementById('configModalTitle').textContent = title;
+
       const tbody = document.getElementById('configTableBody');
       tbody.innerHTML = '';
 
-      configData.forEach((group, idx) => {
+      parsedConfigData.forEach((group, idx) => {
         const tr = document.createElement('tr');
         tr.dataset.group = idx;
 
-        // Account set selection cell
         const selectCell = document.createElement('td');
         const multiSelect = createMultiSelect(selectCell, accountSetList, (selected) => {
           configSelections[idx] = selected.length > 0 ? selected : null;
@@ -1021,7 +1043,6 @@
         });
         tr.appendChild(selectCell);
 
-        // Other cells
         const regionCell = document.createElement('td');
         regionCell.textContent = group.region;
         tr.appendChild(regionCell);
@@ -1041,8 +1062,8 @@
         tbody.appendChild(tr);
       });
 
-      document.getElementById('totalGroup').textContent = configData.length;
-      const totalAccs = configData.reduce((sum, g) => sum + g.accounts.length, 0);
+      document.getElementById('totalGroup').textContent = parsedConfigData.length;
+      const totalAccs = parsedConfigData.reduce((sum, g) => sum + g.accounts.length, 0);
       document.getElementById('totalAccounts').textContent = totalAccs;
       updateConfigStatus();
       document.getElementById('configModal').classList.add('show');
@@ -1054,7 +1075,7 @@
 
     function updateConfigStatus() {
       const configured = Object.values(configSelections).filter(v => v && v.length > 0).length;
-      const total = configData.length;
+      const total = parsedConfigData.length;
       document.getElementById('configuredCount').textContent = configured;
 
       const warningEl = document.getElementById('configWarning');
@@ -1073,7 +1094,8 @@
 
     function saveConfig() {
       closeConfigModal();
-      showToast('账号集配置保存成功！', 'success');
+      const typeName = currentUploadType === 'incremental' ? '增量上传' : '覆盖上传';
+      showToast(`${typeName}配置保存成功！`, 'success');
     }
 
     // ===================== Toast =====================
