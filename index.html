@@ -195,17 +195,12 @@
       z-index: 1000; opacity: 0; pointer-events: none;
       transition: opacity 0.2s;
     }
-    /* config modal 过高时允许滚动 */
-    .modal-overlay.config-modal-overlay {
-      align-items: flex-start;
-      padding: 24px 0;
-      overflow-y: auto;
-    }
+
     .modal-overlay.show { opacity: 1; pointer-events: auto; }
     .modal {
       background: #fff; border-radius: 8px;
       box-shadow: 0 4px 20px rgba(0,0,0,0.15);
-      max-height: 90vh;
+      max-height: 85vh;
       height: auto;
       overflow: visible;
       transform: scale(0.95); transition: transform 0.2s;
@@ -321,11 +316,11 @@
     .multi-select-trigger .tags { display: flex; flex-wrap: wrap; gap: 4px; max-width: 240px; overflow: hidden; }
     .multi-select-trigger .tag { background: #e6f7ff; color: #1890ff; padding: 1px 6px; border-radius: 3px; font-size: 12px; white-space: nowrap; }
     .multi-select-dropdown {
-      position: fixed;            /* 改为 fixed，不受弹窗 overflow 限制 */
+      position: absolute; top: 100%; left: 0;
       min-width: 280px; background: #fff;
       border: 1px solid #d9d9d9; border-radius: 4px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.12);
-      z-index: 2000;            /* 提高 z-index，确保在弹窗之上 */
+      z-index: 2000;
       display: none; max-height: 320px; overflow-y: auto;
     }
     .multi-select-dropdown.show { display: block; }
@@ -1065,35 +1060,12 @@
         }
       }
 
-            // 动态计算下拉菜单位置（position: fixed）
-      function updateDropdownPosition() {
-        const rect = trigger.getBoundingClientRect();
-        const vh = window.innerHeight;
-        const vw = window.innerWidth;
-        let top = rect.bottom + 4;
-        let left = rect.left;
-        const dw = Math.max(280, rect.width);
-        if (top + 320 > vh - 8) {
-          top = rect.top - 320 - 4;
-          if (top < 8) top = 8;
-        }
-        if (left + dw > vw - 8) left = vw - dw - 8;
-        if (left < 8) left = 8;
-        dropdown.style.top = top + 'px';
-        dropdown.style.left = left + 'px';
-        dropdown.style.width = dw + 'px';
-      }
-
-      trigger.addEventListener('click', (e) => {
+            trigger.addEventListener('click', (e) => {
         e.stopPropagation();
         const isOpen = dropdown.classList.contains('show');
-        document.querySelectorAll('.multi-select-dropdown').forEach(d => {
-          d.classList.remove('show');
-          d.style.top = ''; d.style.left = ''; d.style.width = '';
-        });
+        document.querySelectorAll('.multi-select-dropdown').forEach(d => d.classList.remove('show'));
         document.querySelectorAll('.multi-select-trigger').forEach(t => t.classList.remove('open'));
         if (!isOpen) {
-          updateDropdownPosition();
           dropdown.classList.add('show');
           trigger.classList.add('open');
           searchInput.focus();
@@ -1105,20 +1077,12 @@
         renderList();
       });
 
-      window.addEventListener('scroll', () => {
-        if (dropdown.classList.contains('show')) updateDropdownPosition();
-      }, true);
-      window.addEventListener('resize', () => {
-        if (dropdown.classList.contains('show')) updateDropdownPosition();
-      });
-
-      document.addEventListener('mousedown', (e) => {
+      document.addEventListener('click', (e) => {
         if (!wrap.contains(e.target)) {
           dropdown.classList.remove('show');
           trigger.classList.remove('open');
-          dropdown.style.top = ''; dropdown.style.left = ''; dropdown.style.width = '';
         }
-      }, true);
+      });
 
       renderList();
 
@@ -1172,12 +1136,10 @@
       document.getElementById('totalAccounts').textContent = totalAccs;
       updateConfigStatus();
       document.getElementById('configModal').classList.add('show');
-      document.getElementById('configModal').classList.add('config-modal-overlay');
     }
 
     function closeConfigModal() {
       document.getElementById('configModal').classList.remove('show');
-      document.getElementById('configModal').classList.remove('config-modal-overlay');
     }
 
     function updateConfigStatus() {
