@@ -498,6 +498,7 @@
         <div class="upload-top-bar">
           <div class="upload-tip">
             <div><i class="fas fa-info-circle"></i> 请先下载模板，按模板格式填写后再上传</div>
+            <div style="margin-top:6px;color:#cf1322;font-size:12px;"><i class="fas fa-exclamation-circle"></i> 填写前请务必删除模板中的示例数据行（第2行），否则会导致上传失败</div>
           </div>
           <button class="btn btn-default" onclick="downloadTemplate()" style="font-size: 13px;">
             <i class="fas fa-file-excel"></i> 下载模板
@@ -700,23 +701,60 @@
 
     // ===================== Download Template =====================
     function downloadTemplate() {
-      const data = [
-        ['渠道', '账号ID', '省份', '运营商', '优化师'],
-        ['头条', 'ACC001', '广东', '中国移动', '张三'],
-        ['头条', 'ACC002', '广东', '中国移动', '张三'],
-        ['百度', 'ACC003', '广西', '中国联通', '李四'],
-        ['头条', 'ACC004', '北京', '中国电信', ''],
-        ['头条', 'ACC005', '北京', '中国电信', ''],
-        ['头条', 'ACC006', '河南', '中国移动', ''],
-        ['头条', 'ACC007', '河南', '中国移动', ''],
-        ['百度', 'ACC008', '河南', '中国移动', '王五'],
-        ['腾讯', 'ACC009', '北京', '中国电信', ''],
-      ];
+      // Sheet 1: 子账号导入模板（含表头 + 1行示例数据）
+      const headers = ['渠道*', '账号ID*', '省份*', '运营商*', '优化师'];
+      const example = ['头条', 'ACC001', '广东', '中国移动', '张三'];
+      const data = [headers, example];
+
       const ws = XLSX.utils.aoa_to_sheet(data);
+
+      // 设置列宽
+      ws['!cols'] = [
+        { wch: 14 },
+        { wch: 18 },
+        { wch: 12 },
+        { wch: 18 },
+        { wch: 14 }
+      ];
+
+      // Sheet 2: 填写说明
+      const instructions = [
+        ['填写说明'],
+        [''],
+        ['【必填项】（带「*」的列为必填，不能为空）'],
+        [''],
+        ['  • 渠道*：必填，只能填写「头条」「百度」「腾讯」'],
+        ['  • 账号ID*：必填，子账号的唯一标识，不能为空'],
+        ['  • 省份*：必填，账号所属省份，不能为空'],
+        ['  • 运营商*：必填，只能填写「中国移动」「中国联通」「中国电信」'],
+        ['  • 优化师：选填，可留空'],
+        [''],
+        ['【重要】上传前请务必删除第2行（示例数据行），否则示例数据会被一并上传！'],
+        [''],
+        ['填写规范：'],
+        ['1. 请勿修改第1行（表头行）的内容，表头中带「*」的列为必填项'],
+        ['2. 必填项不能为空，否则上传时会报错并披露具体原因'],
+        ['3. 渠道和运营商字段只能填写指定值，否则上传时会报错'],
+        ['4. 同一文件可填写多个省份/运营商的组合，系统会自动按「省份+运营商」分组'],
+        ['5. 支持的文件格式：.xlsx / .xls / .csv'],
+        [''],
+        ['示例：'],
+        ['  渠道*  账号ID*  省份  运营商*    优化师'],
+        ['  头条   ACC001   广东  中国移动   张三'],
+        ['  百度   ACC002   广西  中国联通   李四'],
+        [''],
+        ['如有疑问，请联系技术支持。']
+      ];
+
+      const wsInstructions = XLSX.utils.aoa_to_sheet(instructions);
+      wsInstructions['!cols'] = [{ wch: 70 }];
+
       const wb = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(wb, ws, '子账号模板');
+      XLSX.utils.book_append_sheet(wb, ws, '子账号导入模板');
+      XLSX.utils.book_append_sheet(wb, wsInstructions, '填写说明');
       XLSX.writeFile(wb, '子账号导入模板.xlsx');
-      showToast('模板下载成功', 'success');
+
+      showToast('模板已下载，请查看「填写说明」sheet，上传前需删除示例数据行', 'success');
     }
 
     // ===================== File Upload + Real Validation =====================
@@ -790,12 +828,19 @@
         return errors;
       }
 
-      // Validate header
+      // Validate header (accept both with and without *)
       const header = jsonData[0];
-      const expectedHeader = ['渠道', '账号ID', '省份', '运营商', '优化师'];
-      const headerOk = expectedHeader.every((h, i) => String(header[i] || '').trim() === h);
-      if (!headerOk) {
-        errors.push('文件表头格式不正确，请使用下载的模板填写（表头：渠道、账号ID、省份、运营商、优化师）');
+      const headerStr = header.map(h => String(h || '').trim());
+
+      // 支持的表头格式：带 * 或不带 *
+      const expectedWithStar    = ['渠道*', '账号ID*', '省份*', '运营商*', '优化师'];
+      const expectedWithoutStar = ['渠道',   '账号ID',   '省份',   '运营商',   '优化师'];
+
+      const isWithStar    = expectedWithStar.every((h, i) => headerStr[i] === h);
+      const isWithoutStar = expectedWithoutStar.every((h, i) => headerStr[i] === h);
+
+      if (!isWithStar && !isWithoutStar) {
+        errors.push('文件表头格式不正确，请使用下载的模板填写（表头应为：渠道*、账号ID*、省份*、运营商*、优化师）');
         return errors;
       }
 
@@ -828,6 +873,27 @@
           errors.push(`第${rowNum}行：运营商不能为空`);
         } else if (!VALID_OPERATORS.includes(operator)) {
           errors.push(`第${rowNum}行：运营商"${operator}"填写错误，应为：中国移动、中国联通、中国电信`);
+        }
+      }
+
+      // 检测是否未删除示例数据行（模板第2行）
+      // 示例行内容：['头条', 'ACC001', '广东', '中国移动', '张三']
+      if (jsonData.length >= 2) {
+        const EXAMPLE_ROW = ['头条', 'ACC001', '广东', '中国移动', '张三'];
+        for (let i = 1; i < jsonData.length; i++) {
+          const row = jsonData[i];
+          const rowVals = [
+            String(row[0] || '').trim(),
+            String(row[1] || '').trim(),
+            String(row[2] || '').trim(),
+            String(row[3] || '').trim(),
+            String(row[4] || '').trim()
+          ];
+          const isExample = EXAMPLE_ROW.every((val, idx) => rowVals[idx] === val);
+          if (isExample) {
+            errors.push(`第${i + 1}行内容与模板示例数据完全一致，请先删除示例数据行（模板第2行）后再上传。如需查看示例格式，请打开「填写说明」sheet。`);
+            break; // 找到一行即可，不必继续检测
+          }
         }
       }
 
