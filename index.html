@@ -612,18 +612,13 @@
           <input type="text" id="newAccountSetName" placeholder="请输入账户集名称"
                  style="width:100%;padding:7px 12px;border:1px solid #d9d9d9;border-radius:4px;font-size:14px;">
         </div>
-        <div style="margin-bottom: 16px;">
+        <div>
           <label style="display:block;margin-bottom:6px;font-weight:500;font-size:14px;">渠道 <span style="color:#cf1322;">*</span></label>
           <select id="newAccountSetChannel" style="width:100%;padding:7px 12px;border:1px solid #d9d9d9;border-radius:4px;font-size:14px;outline:none;cursor:pointer;">
             <option value="">请选择渠道</option>
             <option value="广点通">广点通</option>
             <option value="头条">头条</option>
           </select>
-        </div>
-        <div>
-          <label style="display:block;margin-bottom:6px;font-weight:500;font-size:14px;">创建人 <span style="color:#cf1322;">*</span></label>
-          <input type="text" id="newAccountSetCreator" placeholder="请输入创建人"
-                 style="width:100%;padding:7px 12px;border:1px solid #d9d9d9;border-radius:4px;font-size:14px;">
         </div>
       </div>
       <div class="modal-footer">
@@ -1194,7 +1189,6 @@
     function submitCreateAccountSet() {
       const name = document.getElementById('newAccountSetName').value.trim();
       const channel = document.getElementById('newAccountSetChannel').value;
-      const creator = document.getElementById('newAccountSetCreator').value.trim();
       if (!name) {
         showToast('请输入账户集名称', 'error');
         return;
@@ -1203,14 +1197,10 @@
         showToast('请选择渠道', 'error');
         return;
       }
-      if (!creator) {
-        showToast('请输入创建人', 'error');
-        return;
-      }
       // 生成唯一 ID
       const id = 'ZHJ' + Date.now().toString().slice(-6);
       // 添加到 accountSetList
-      accountSetList.push({ id: id, name: name, channel: channel, creator: creator });
+      accountSetList.push({ id: id, name: name, channel: channel });
       closeCreateAccountSet();
       showToast('账户集「' + name + '」新建成功！', 'success');
     }
