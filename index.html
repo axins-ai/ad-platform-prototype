@@ -567,10 +567,16 @@
         <div class="modal-close" onclick="closeConfigModal()"><i class="fas fa-times"></i></div>
       </div>
       <div class="modal-body" style="padding: 16px 24px; overflow-x: auto;">
+        <div style="margin-bottom:12px;">
+          <button class="btn btn-default" onclick="showCreateAccountSet()" style="font-size:13px;">
+            <i class="fas fa-plus"></i> 新建账户集
+          </button>
+        </div>
         <table class="config-table">
           <thead>
             <tr>
               <th>账户集名称选择</th>
+              <th>渠道</th>
               <th>账户地域</th>
               <th>账户运营商</th>
               <th>账户优化师</th>
@@ -592,6 +598,33 @@
       </div>
     </div>
   </div>
+
+<!-- 新建账户集弹窗 -->
+  <div class="modal-overlay" id="createAccountSetModal">
+    <div class="modal" style="width: 480px;">
+      <div class="modal-header">
+        <div class="modal-title">新建账户集</div>
+        <div class="modal-close" onclick="closeCreateAccountSet()"><i class="fas fa-times"></i></div>
+      </div>
+      <div class="modal-body" style="padding: 20px 24px;">
+        <div style="margin-bottom: 16px;">
+          <label style="display:block;margin-bottom:6px;font-weight:500;font-size:14px;">账户集名称 <span style="color:#cf1322;">*</span></label>
+          <input type="text" id="newAccountSetName" placeholder="请输入账户集名称"
+                 style="width:100%;padding:7px 12px;border:1px solid #d9d9d9;border-radius:4px;font-size:14px;">
+        </div>
+        <div>
+          <label style="display:block;margin-bottom:6px;font-weight:500;font-size:14px;">创建人 <span style="color:#cf1322;">*</span></label>
+          <input type="text" id="newAccountSetCreator" placeholder="请输入创建人"
+                 style="width:100%;padding:7px 12px;border:1px solid #d9d9d9;border-radius:4px;font-size:14px;">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-default" onclick="closeCreateAccountSet()">取消</button>
+        <button class="btn btn-primary" onclick="submitCreateAccountSet()">确认新建</button>
+      </div>
+    </div>
+  </div>
+
 
   <!-- Toast -->
   <div class="toast" id="toast"></div>
@@ -634,7 +667,7 @@
 
     // Valid values
     const VALID_CHANNELS = ['头条', '广点通'];
-    const VALID_OPERATORS = ['中国移动', '中国联通', '中国电信'];
+    const VALID_OPERATORS = ['移动', '联通', '电信'];
 
     let currentUploadType = null; // 'incremental' or 'overwrite'
     let parsedConfigData = [];  // data parsed from uploaded file
@@ -705,7 +738,7 @@
     function downloadTemplate() {
       // Sheet 1: 子账号导入模板（含表头 + 1行示例数据）
       const headers = ['渠道*', '账号ID*', '省份*', '运营商*', '优化师'];
-      const example = ['头条', 'ACC001', '广东', '中国移动', '张三'];
+      const example = ['头条', 'ACC001', '广东', '移动', '张三'];
       const data = [headers, example];
 
       const ws = XLSX.utils.aoa_to_sheet(data);
@@ -728,7 +761,7 @@
         ['  • 渠道*   ：必填，只能填写「头条」「广点通」'],
         ['  • 账号ID*  ：必填，子账号的唯一标识，不能为空'],
         ['  • 省份*   ：必填，账号所属省份，不能为空'],
-        ['  • 运营商*：必填，只能填写「中国移动」「中国联通」「中国电信」'],
+        ['  • 运营商*：必填，只能填写「移动」「联通」「电信」'],
         ['  • 优化师：选填，可留空'],
         [''],
         ['【重要】上传前请务必删除第2行（示例数据行），否则示例数据会被一并上传！'],
@@ -867,14 +900,14 @@
         if (!operator) {
           errors.push(`第${rowNum}行：运营商不能为空`);
         } else if (!VALID_OPERATORS.includes(operator)) {
-          errors.push(`第${rowNum}行：运营商"${operator}"填写错误，应为：中国移动、中国联通、中国电信`);
+          errors.push(`第${rowNum}行：运营商"${operator}"填写错误，应为：移动、联通、电信`);
         }
       }
 
       // 检测是否未删除示例数据行（模板第2行）
       // 示例行内容：['头条', 'ACC001', '广东', '中国移动', '张三']
       if (jsonData.length >= 2) {
-        const EXAMPLE_ROW = ['头条', 'ACC001', '广东', '中国移动', '张三'];
+        const EXAMPLE_ROW = ['头条', 'ACC001', '广东', '移动', '张三'];
         for (let i = 1; i < jsonData.length; i++) {
           const row = jsonData[i];
           const rowVals = [
@@ -898,17 +931,19 @@
     function groupUploadedData(jsonData) {
       // Skip header row
       const rows = jsonData.slice(1);
-      // Group by province + operator
+      // Group by channel|province|operator
       const groups = {};
       rows.forEach((row, idx) => {
-        const province = String(row[2] || '').trim();
-        const operator = String(row[3] || '').trim();
+        const channel  = String(row[0] || '').trim();
         const accountId = String(row[1] || '').trim();
+        const province  = String(row[2] || '').trim();
+        const operator  = String(row[3] || '').trim();
         const optimizer = String(row[4] || '').trim();
 
-        const key = `${province}|${operator}`;
+        const key = `${channel}|${province}|${operator}`;
         if (!groups[key]) {
           groups[key] = {
+            channel: channel,
             region: province,
             operator: operator,
             optimizer: optimizer,
@@ -918,7 +953,6 @@
         if (accountId) {
           groups[key].accounts.push(accountId);
         }
-        // Update optimizer if present
         if (optimizer) {
           groups[key].optimizer = optimizer;
         }
@@ -1138,6 +1172,36 @@
         }
       };
     }
+    // ===================== 新建账户集 =====================
+    function showCreateAccountSet() {
+      document.getElementById('newAccountSetName').value = '';
+      document.getElementById('newAccountSetCreator').value = '';
+      document.getElementById('createAccountSetModal').classList.add('show');
+    }
+
+    function closeCreateAccountSet() {
+      document.getElementById('createAccountSetModal').classList.remove('show');
+    }
+
+    function submitCreateAccountSet() {
+      const name = document.getElementById('newAccountSetName').value.trim();
+      const creator = document.getElementById('newAccountSetCreator').value.trim();
+      if (!name) {
+        showToast('请输入账户集名称', 'error');
+        return;
+      }
+      if (!creator) {
+        showToast('请输入创建人', 'error');
+        return;
+      }
+      // 生成唯一 ID
+      const id = 'ZHJ' + Date.now().toString().slice(-6);
+      // 添加到 accountSetList
+      accountSetList.push({ id: id, name: name, creator: creator });
+      closeCreateAccountSet();
+      showToast('账户集「' + name + '」新建成功！', 'success');
+    }
+
     // ===================== Config Modal =====================
     function showConfigModal() {
       configSelections = {};
@@ -1157,6 +1221,12 @@
           updateConfigStatus();
         });
         tr.appendChild(selectCell);
+
+        // 新增：渠道列
+        const channelCell = document.createElement('td');
+        channelCell.textContent = group.channel || '-';
+        channelCell.style.fontWeight = '500';
+        tr.appendChild(channelCell);
 
         const regionCell = document.createElement('td');
         regionCell.textContent = group.region;
