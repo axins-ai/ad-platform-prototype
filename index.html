@@ -421,8 +421,7 @@
               <select id="searchChannel">
                 <option value="">请选择</option>
                 <option value="头条">头条</option>
-                <option value="百度">百度</option>
-                <option value="广点通">广点通</option>
+                                <option value="广点通">广点通</option>
               </select>
             </div>
           </div>
@@ -634,7 +633,7 @@
     ];
 
     // Valid values
-    const VALID_CHANNELS = ['头条', '百度', '广点通'];
+    const VALID_CHANNELS = ['头条', '广点通'];
     const VALID_OPERATORS = ['中国移动', '中国联通', '中国电信'];
 
     let currentUploadType = null; // 'incremental' or 'overwrite'
@@ -726,7 +725,7 @@
         [''],
         ['【必填项说明】（带「*」的列为必填，不能为空）'],
         [''],
-        ['  • 渠道*   ：必填，只能填写「头条」「百度」「广点通」'],
+        ['  • 渠道*   ：必填，只能填写「头条」「广点通」'],
         ['  • 账号ID*  ：必填，子账号的唯一标识，不能为空'],
         ['  • 省份*   ：必填，账号所属省份，不能为空'],
         ['  • 运营商*：必填，只能填写「中国移动」「中国联通」「中国电信」'],
@@ -854,7 +853,7 @@
         if (!channel) {
           errors.push(`第${rowNum}行：渠道不能为空`);
         } else if (!VALID_CHANNELS.includes(channel)) {
-          errors.push(`第${rowNum}行：渠道"${channel}"不在允许范围内，请使用：头条、百度、广点通`);
+          errors.push(`第${rowNum}行：渠道"${channel}"不在允许范围内，请使用：头条、广点通`);
         }
 
         if (!accountId) {
