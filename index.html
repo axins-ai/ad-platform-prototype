@@ -357,6 +357,27 @@
     .toast.success { background: #52c41a; }
     .toast.error { background: #ff4d4f; }
 
+    /* Single upload area */
+    .upload-area {
+      border: 2px dashed #d9d9d9;
+      border-radius: 8px;
+      padding: 48px 40px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s;
+      max-width: 420px;
+      margin: 32px auto 0;
+    }
+    .upload-area:hover { border-color: #1890ff; background: #f0f7ff; }
+    .upload-area .upload-icon { font-size: 48px; color: #d9d9d9; margin-bottom: 16px; }
+    .upload-area:hover .upload-icon { color: #1890ff; }
+    .upload-area .upload-main { font-size: 16px; color: #333; margin-bottom: 8px; }
+    .upload-area .upload-hint { font-size: 12px; color: #999; }
+
+    /* Warning button */
+    .btn-warning { background: #fa8c16; color: #fff; border-color: #fa8c16; }
+    .btn-warning:hover { background: #ffa940; border-color: #ffa940; }
+
     .hidden { display: none !important; }
   </style>
 </head>
@@ -507,24 +528,15 @@
           </button>
         </div>
 
-        <!-- Step 1: Select upload type -->
+        <!-- Step 1: Upload file -->
         <div id="stepSelectType">
-          <div class="upload-type-cards">
-            <div class="upload-card incremental" onclick="triggerFileUpload('incremental')">
-              <div class="card-icon"><i class="fas fa-plus-circle"></i></div>
-              <div class="card-title">增量上传</div>
-              <div class="card-desc">批量新增账号集<br>子账号配置</div>
-            </div>
-            <div class="upload-card overwrite" onclick="triggerFileUpload('overwrite')">
-              <div class="card-icon"><i class="fas fa-sync-alt"></i></div>
-              <div class="card-title">覆盖上传</div>
-              <div class="card-desc">批量覆盖账户集<br>子账号配置</div>
-            </div>
+          <div class="upload-area" onclick="triggerFileUpload()">
+            <div class="upload-icon"><i class="fas fa-cloud-upload-alt"></i></div>
+            <div class="upload-main">点击上传文件</div>
+            <div class="upload-hint">支持 .xlsx / .xls / .csv 格式</div>
           </div>
-          <input type="file" id="fileInputIncremental" accept=".xlsx,.xls,.csv" class="hidden" onchange="handleFileSelect(event, 'incremental')">
-          <input type="file" id="fileInputOverwrite" accept=".xlsx,.xls,.csv" class="hidden" onchange="handleFileSelect(event, 'overwrite')">
+          <input type="file" id="fileInput" accept=".xlsx,.xls,.csv" class="hidden" onchange="handleFileSelect(event)">
         </div>
-
         <!-- Step 2: Upload progress -->
         <div class="upload-progress" id="uploadProgress">
           <div style="font-size: 40px; color: #1890ff; margin-bottom: 16px;">
@@ -594,7 +606,8 @@
       </div>
       <div class="modal-footer">
         <button class="btn btn-default" onclick="closeConfigModal()">取消</button>
-        <button class="btn btn-primary" id="saveConfigBtn" disabled onclick="saveConfig()">保存并完成上传</button>
+        <button class="btn btn-primary" id="incrementalBtn" disabled onclick="confirmUpload('incremental')">增量上传</button>
+        <button class="btn btn-warning" id="overwriteBtn" disabled onclick="confirmUpload('overwrite')">覆盖上传</button>
       </div>
     </div>
   </div>
@@ -672,7 +685,7 @@
     const VALID_CHANNELS = ['头条', '广点通'];
     const VALID_OPERATORS = ['移动', '联通', '电信'];
 
-    let currentUploadType = null; // 'incremental' or 'overwrite'
+    let pendingUploadType = null; // "incremental" or "overwrite"
     let parsedConfigData = [];  // data parsed from uploaded file
     let configSelections = {};
 
@@ -719,7 +732,7 @@
 
     // ===================== Upload Modal =====================
     function openUploadModal() {
-      currentUploadType = null;
+      pendingUploadType = null;
       document.getElementById('stepSelectType').classList.remove('hidden');
       document.getElementById('uploadProgress').classList.remove('show');
       document.getElementById('fileInputIncremental').value = '';
@@ -731,10 +744,8 @@
       document.getElementById('uploadModal').classList.remove('show');
     }
 
-    function triggerFileUpload(type) {
-      currentUploadType = type;
-      const inputId = type === 'incremental' ? 'fileInputIncremental' : 'fileInputOverwrite';
-      document.getElementById(inputId).click();
+    function triggerFileUpload() {
+      document.getElementById('fileInput').click();
     }
 
     // ===================== Download Template =====================
@@ -789,10 +800,9 @@
     }
 
     // ===================== File Upload + Real Validation =====================
-    function handleFileSelect(e, type) {
+    function handleFileSelect(e) {
       const file = e.target.files[0];
       if (!file) return;
-      currentUploadType = type;
 
       // Show progress
       document.getElementById('stepSelectType').classList.add('hidden');
@@ -1208,8 +1218,9 @@
     // ===================== Config Modal =====================
     function showConfigModal() {
       configSelections = {};
-      const title = currentUploadType === 'incremental' ? '增量上传结果' : '覆盖上传结果';
-      document.getElementById('configModalTitle').textContent = title;
+      document.getElementById('configModalTitle').textContent = '上传结果';
+      // Reset upload type buttons
+      updateConfigStatus();
 
       const tbody = document.getElementById('configTableBody');
       tbody.innerHTML = '';
@@ -1267,23 +1278,46 @@
       document.getElementById('configuredCount').textContent = configured;
 
       const warningEl = document.getElementById('configWarning');
-      const saveBtn = document.getElementById('saveConfigBtn');
+      const incBtn = document.getElementById('incrementalBtn');
+      const overBtn = document.getElementById('overwriteBtn');
 
       if (configured < total) {
-        warningEl.innerHTML = '<i class="fas fa-exclamation-triangle"></i> 存在未配置账户集的账户，无法保存';
+        warningEl.innerHTML = '<i class="fas fa-exclamation-triangle"></i> 存在未配置账户集的账户，无法上传';
         warningEl.className = 'warning';
-        saveBtn.disabled = true;
+        incBtn.disabled = true;
+        overBtn.disabled = true;
       } else {
-        warningEl.innerHTML = '<i class="fas fa-check-circle"></i> 全部配置完成，可以保存';
+        warningEl.innerHTML = '<i class="fas fa-check-circle"></i> 全部配置完成，可以上传';
         warningEl.className = 'success';
-        saveBtn.disabled = false;
+        incBtn.disabled = false;
+        overBtn.disabled = false;
       }
     }
 
-    function saveConfig() {
+    function confirmUpload(type) {
+      pendingUploadType = type;
+      const title = document.getElementById('confirmUploadTitle');
+      const msg = document.getElementById('confirmUploadMsg');
+      if (type === 'incremental') {
+        title.textContent = '确认增量上传';
+        msg.textContent = '确认要执行增量上传吗？\n\n增量上传将批量新增账号集子账号配置。';
+      } else {
+        title.textContent = '确认覆盖上传';
+        msg.textContent = '确认要执行覆盖上传吗？\n\n覆盖上传将批量覆盖账户集子账号配置，原配置将被替换。';
+      }
+      document.getElementById('confirmUploadModal').classList.add('show');
+    }
+
+    function closeConfirmUploadModal() {
+      document.getElementById('confirmUploadModal').classList.remove('show');
+    }
+
+    function executeUpload() {
+      closeConfirmUploadModal();
       closeConfigModal();
-      const typeName = currentUploadType === 'incremental' ? '增量上传' : '覆盖上传';
+      const typeName = pendingUploadType === 'incremental' ? '增量上传' : '覆盖上传';
       showToast(`${typeName}配置保存成功！`, 'success');
+      pendingUploadType = null;
     }
 
     // ===================== Toast =====================
@@ -1297,5 +1331,22 @@
     // ===================== Init =====================
     renderTable();
   </script>
+
+  <!-- Confirm Upload Modal -->
+  <div class="modal-overlay" id="confirmUploadModal">
+    <div class="modal" style="width: 420px;">
+      <div class="modal-header">
+        <div class="modal-title" id="confirmUploadTitle">确认上传</div>
+        <div class="modal-close" onclick="closeConfirmUploadModal()"><i class="fas fa-times"></i></div>
+      </div>
+      <div class="modal-body" style="padding: 24px;">
+        <p id="confirmUploadMsg" style="font-size: 14px; color: #333; line-height: 1.8;"></p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-default" onclick="closeConfirmUploadModal()">取消</button>
+        <button class="btn btn-primary" id="confirmUploadOkBtn" onclick="executeUpload()">确认上传</button>
+      </div>
+    </div>
+  </div>
 </body>
 </html>
