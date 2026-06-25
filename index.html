@@ -438,7 +438,7 @@
               <input type="text" placeholder="请输入" id="searchAccount">
             </div>
             <div class="search-field">
-              <label>业务属性：</label>
+              <label>业务：</label>
               <select id="searchBizType">
                 <option value="">请选择</option>
                 <option value="存量">存量</option>
@@ -484,7 +484,7 @@
                 <th>序号</th>
                 <th>账号集名称</th>
                 <th>账号集ID</th>
-                <th>业务属性</th>
+                <th>业务</th>
                 <th>渠道类型</th>
                 <th>账号数量</th>
                 <th>状态</th>
@@ -632,7 +632,7 @@
       </div>
       <div class="modal-body" style="padding: 20px 24px;">
         <div style="margin-bottom: 16px;">
-          <label style="display:block;margin-bottom:6px;font-weight:500;font-size:14px;">业务属性 <span style="color:#cf1322;">*</span></label>
+          <label style="display:block;margin-bottom:6px;font-weight:500;font-size:14px;">业务 <span style="color:#cf1322;">*</span></label>
           <select id="newAccountSetBizType" style="width:100%;padding:7px 12px;border:1px solid #d9d9d9;border-radius:4px;font-size:14px;outline:none;cursor:pointer;">
             <option value="存量" selected>存量</option>
             <option value="权益">权益</option>
@@ -1270,7 +1270,7 @@
       const name = document.getElementById('newAccountSetName').value.trim();
       const channel = document.getElementById('newAccountSetChannel').value;
       if (!bizType) {
-        showToast('请选择业务属性', 'error');
+        showToast('请选择业务', 'error');
         return;
       }
       if (!name) {
@@ -1304,7 +1304,7 @@
         tr.dataset.group = idx;
 
         const selectCell = document.createElement('td');
-        // 仅展示业务属性为「存量」的账户集
+        // 仅展示业务为「存量」的账户集
         const filteredAccountSets = accountSetList.filter(s => s.bizType !== '权益');
         const multiSelect = createMultiSelect(selectCell, filteredAccountSets, (selected) => {
           configSelections[idx] = selected.length > 0 ? selected : null;
