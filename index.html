@@ -892,7 +892,7 @@
       const isWithoutStar = expectedWithoutStar.every((h, i) => headerStr[i] === h);
 
       if (!isWithStar && !isWithoutStar) {
-        errors.push('文件表头格式不正确，请使用下载的模板填写（表头应为：渠道*、账号ID*、省份*、运营商*、优化师）');
+        errors.push('文件表头格式不正确，请使用下载的模板填写（表头应为：业务类型*、渠道*、账号ID*、省份*、运营商*、优化师）');
         return errors;
       }
 
@@ -901,11 +901,18 @@
         const row = jsonData[i];
         const rowNum = i + 1;
 
-        const channel = String(row[0] || '').trim();
-        const accountId = String(row[1] || '').trim();
-        const province = String(row[2] || '').trim();
-        const operator = String(row[3] || '').trim();
+        const bizType   = String(row[0] || '').trim();
+        const channel   = String(row[1] || '').trim();
+        const accountId = String(row[2] || '').trim();
+        const province  = String(row[3] || '').trim();
+        const operator  = String(row[4] || '').trim();
         // optimizer is optional, no validation needed
+
+        if (!bizType) {
+          errors.push(`第${rowNum}行：业务类型不能为空`);
+        } else if (!VALID_BIZ_TYPES.includes(bizType)) {
+          errors.push(`第${rowNum}行：业务类型"${bizType}"不在允许范围内，请使用：存量、权益`);
+        }
 
         if (!channel) {
           errors.push(`第${rowNum}行：渠道不能为空`);
@@ -944,7 +951,7 @@
           ];
           const isExample = EXAMPLE_ROW.every((val, idx) => rowVals[idx] === val);
           if (isExample) {
-            errors.push(`第${i + 1}行内容与模板示例数据完全一致，请先删除示例数据行（模板第2行，业务类型=存量）后再上传。如需查看示例格式，请打开「填写说明」sheet。`);
+            errors.push(`第${i + 1}行内容与模板示例数据完全一致，请先删除示例数据行（模板第2行）后再上传。如需查看示例格式，请打开「填写说明」sheet。`);
             break; // 找到一行即可，不必继续检测
           }
         }
