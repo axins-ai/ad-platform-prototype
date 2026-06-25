@@ -522,6 +522,7 @@
           <div class="upload-tip">
             <div><i class="fas fa-info-circle"></i> 请先下载模板，按模板格式填写后再上传</div>
             <div style="margin-top:6px;color:#cf1322;font-size:12px;"><i class="fas fa-exclamation-circle"></i> 传前请务必删除第2行（示例数据行），否则示例数据会被一并上传！</div>
+            <div style="margin-top:8px;color:#1890ff;font-size:13px;font-weight:500;"><i class="fas fa-briefcase"></i> 存量业务专用</div>
           </div>
           <button class="btn btn-default" onclick="downloadTemplate()" style="font-size: 13px;">
             <i class="fas fa-file-excel"></i> 下载模板
@@ -622,6 +623,13 @@
       </div>
       <div class="modal-body" style="padding: 20px 24px;">
         <div style="margin-bottom: 16px;">
+          <label style="display:block;margin-bottom:6px;font-weight:500;font-size:14px;">业务属性 <span style="color:#cf1322;">*</span></label>
+          <select id="newAccountSetBizType" style="width:100%;padding:7px 12px;border:1px solid #d9d9d9;border-radius:4px;font-size:14px;outline:none;cursor:pointer;">
+            <option value="存量" selected>存量</option>
+            <option value="权益">权益</option>
+          </select>
+        </div>
+        <div style="margin-bottom: 16px;">
           <label style="display:block;margin-bottom:6px;font-weight:500;font-size:14px;">账户集名称 <span style="color:#cf1322;">*</span></label>
           <input type="text" id="newAccountSetName" placeholder="请输入账户集名称"
                  style="width:100%;padding:7px 12px;border:1px solid #d9d9d9;border-radius:4px;font-size:14px;">
@@ -662,24 +670,24 @@
     ];
 
     const accountSetList = [
-      { id: 'ZHJ000272', name: '【hpx】-湖南移动--3-高cpm', creator: '黄佩贤' },
-      { id: 'ZHJ000100', name: '【hpx】-湖北移动-1', creator: '黄佩贤' },
-      { id: 'ZHJ000259', name: '【hpx】-湖南移动-1', creator: '黄佩贤' },
-      { id: 'ZHJ000117', name: '【hpx】-海南电信-1', creator: '黄佩贤' },
-      { id: 'ZHJ010364', name: '【hpx】-贵州电信-1', creator: '黄佩贤' },
-      { id: 'ZHJ000119', name: '【hpx】-广西移动-1', creator: '黄佩贤' },
-      { id: 'ZHJ000121', name: '【hpx】-广西电信-1', creator: '黄佩贤' },
-      { id: 'ZHJ000199', name: '【hpx】-广东移动-1', creator: '黄佩贤' },
-      { id: 'ZHJ000127', name: '【hpx】-广东电信-1', creator: '黄佩贤' },
-      { id: 'ZHJ000233', name: '【hpx】-甘肃移动-1', creator: '黄佩贤' },
-      { id: 'ZHJ010193', name: '【hyf】杰悦', creator: '李明' },
-      { id: 'ZHJ010357', name: '火垣-银联', creator: '王芳' },
-      { id: 'ZHJ010195', name: '【hpx】-江苏联通-1', creator: '黄佩贤' },
-      { id: 'ZHJ010099', name: '【hpx】-广东联通-1', creator: '黄佩贤' },
-      { id: 'ZHJ010224', name: '【CzH】-联通-广东联通-拉空', creator: '张伟' },
-      { id: 'ZHJ000207', name: '【CzH】-移动-广东移动-拉空', creator: '张伟' },
-      { id: 'ZHJ000104', name: '【CzH】-电信-广东电信-A1', creator: '张伟' },
-      { id: 'ZHJ000281', name: '【CzH】-移动-河南-拉空-高出价', creator: '张伟' },
+      { id: 'ZHJ000272', name: '【hpx】-湖南移动--3-高cpm', bizType: '存量', creator: '黄佩贤' },
+      { id: 'ZHJ000100', name: '【hpx】-湖北移动-1', bizType: '存量', creator: '黄佩贤' },
+      { id: 'ZHJ000259', name: '【hpx】-湖南移动-1', bizType: '存量', creator: '黄佩贤' },
+      { id: 'ZHJ000117', name: '【hpx】-海南电信-1', bizType: '存量', creator: '黄佩贤' },
+      { id: 'ZHJ010364', name: '【hpx】-贵州电信-1', bizType: '存量', creator: '黄佩贤' },
+      { id: 'ZHJ000119', name: '【hpx】-广西移动-1', bizType: '存量', creator: '黄佩贤' },
+      { id: 'ZHJ000121', name: '【hpx】-广西电信-1', bizType: '存量', creator: '黄佩贤' },
+      { id: 'ZHJ000199', name: '【hpx】-广东移动-1', bizType: '存量', creator: '黄佩贤' },
+      { id: 'ZHJ000127', name: '【hpx】-广东电信-1', bizType: '存量', creator: '黄佩贤' },
+      { id: 'ZHJ000233', name: '【hpx】-甘肃移动-1', bizType: '存量', creator: '黄佩贤' },
+      { id: 'ZHJ010193', name: '【hyf】杰悦', bizType: '存量', creator: '李明' },
+      { id: 'ZHJ010357', name: '火垣-银联', bizType: '存量', creator: '王芳' },
+      { id: 'ZHJ010195', name: '【hpx】-江苏联通-1', bizType: '存量', creator: '黄佩贤' },
+      { id: 'ZHJ010099', name: '【hpx】-广东联通-1', bizType: '存量', creator: '黄佩贤' },
+      { id: 'ZHJ010224', name: '【CzH】-联通-广东联通-拉空', bizType: '存量', creator: '张伟' },
+      { id: 'ZHJ000207', name: '【CzH】-移动-广东移动-拉空', bizType: '存量', creator: '张伟' },
+      { id: 'ZHJ000104', name: '【CzH】-电信-广东电信-A1', bizType: '存量', creator: '张伟' },
+      { id: 'ZHJ000281', name: '【CzH】-移动-河南-拉空-高出价', bizType: '存量', creator: '张伟' },
     ];
 
     // Valid values
@@ -1193,6 +1201,7 @@
     }
     // ===================== 新建账户集 =====================
     function showCreateAccountSet() {
+      document.getElementById('newAccountSetBizType').value = '存量';
       document.getElementById('newAccountSetName').value = '';
       document.getElementById('newAccountSetChannel').value = '';
       document.getElementById('createAccountSetModal').classList.add('show');
@@ -1203,8 +1212,13 @@
     }
 
     function submitCreateAccountSet() {
+      const bizType = document.getElementById('newAccountSetBizType').value;
       const name = document.getElementById('newAccountSetName').value.trim();
       const channel = document.getElementById('newAccountSetChannel').value;
+      if (!bizType) {
+        showToast('请选择业务属性', 'error');
+        return;
+      }
       if (!name) {
         showToast('请输入账户集名称', 'error');
         return;
@@ -1216,7 +1230,7 @@
       // 生成唯一 ID
       const id = 'ZHJ' + Date.now().toString().slice(-6);
       // 添加到 accountSetList
-      accountSetList.push({ id: id, name: name, channel: channel });
+      accountSetList.push({ id: id, name: name, bizType: bizType, channel: channel });
       closeCreateAccountSet();
       showToast('账户集「' + name + '」新建成功！', 'success');
     }
@@ -1236,7 +1250,9 @@
         tr.dataset.group = idx;
 
         const selectCell = document.createElement('td');
-        const multiSelect = createMultiSelect(selectCell, accountSetList, (selected) => {
+        // 仅展示业务属性为「存量」的账户集
+        const filteredAccountSets = accountSetList.filter(s => s.bizType !== '权益');
+        const multiSelect = createMultiSelect(selectCell, filteredAccountSets, (selected) => {
           configSelections[idx] = selected.length > 0 ? selected : null;
           updateConfigStatus();
         });
