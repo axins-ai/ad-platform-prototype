@@ -438,6 +438,14 @@
               <input type="text" placeholder="请输入" id="searchAccount">
             </div>
             <div class="search-field">
+              <label>业务属性：</label>
+              <select id="searchBizType">
+                <option value="">请选择</option>
+                <option value="存量">存量</option>
+                <option value="权益">权益</option>
+              </select>
+            </div>
+            <div class="search-field">
               <label>渠道类型：</label>
               <select id="searchChannel">
                 <option value="">请选择</option>
@@ -476,6 +484,7 @@
                 <th>序号</th>
                 <th>账号集名称</th>
                 <th>账号集ID</th>
+                <th>业务属性</th>
                 <th>渠道类型</th>
                 <th>账号数量</th>
                 <th>状态</th>
@@ -707,6 +716,7 @@
           <td>${row.id}</td>
           <td>${row.name}</td>
           <td>${row.code}</td>
+          <td>${row.bizType || '-'}</td>
           <td>${row.channel}</td>
           <td>${row.count}</td>
           <td><div class="toggle-switch ${row.status ? 'on' : ''}" onclick="toggleStatus(${row.id})"></div></td>
@@ -732,12 +742,49 @@
       document.getElementById('searchName').value = '';
       document.getElementById('searchId').value = '';
       document.getElementById('searchAccount').value = '';
+      document.getElementById('searchBizType').value = '';
       document.getElementById('searchChannel').value = '';
       document.getElementById('searchStatus').value = '';
       renderTable();
     }
 
-    function doSearch() { showToast('查询完成', 'success'); }
+    function doSearch() {
+      const nameVal    = document.getElementById('searchName').value.trim().toLowerCase();
+      const idVal      = document.getElementById('searchId').value.trim().toLowerCase();
+      const accountVal = document.getElementById('searchAccount').value.trim().toLowerCase();
+      const bizTypeVal = document.getElementById('searchBizType').value;
+      const channelVal  = document.getElementById('searchChannel').value;
+      const statusVal  = document.getElementById('searchStatus').value;
+
+      let filtered = tableData;
+
+      if (nameVal) {
+        filtered = filtered.filter(r => r.name.toLowerCase().includes(nameVal));
+      }
+      if (idVal) {
+        filtered = filtered.filter(r => r.code.toLowerCase().includes(idVal));
+      }
+      if (accountVal) {
+        // 账号筛选匹配账号集名称和ID
+        filtered = filtered.filter(r =>
+          r.name.toLowerCase().includes(accountVal) ||
+          r.code.toLowerCase().includes(accountVal)
+        );
+      }
+      if (bizTypeVal) {
+        filtered = filtered.filter(r => r.bizType === bizTypeVal);
+      }
+      if (channelVal) {
+        filtered = filtered.filter(r => r.channel === channelVal);
+      }
+      if (statusVal) {
+        const isOn = statusVal === '启用';
+        filtered = filtered.filter(r => r.status === isOn);
+      }
+
+      renderTable(filtered);
+      showToast('查询完成，共 ' + filtered.length + ' 条结果', 'success');
+    }
     function changePage(dir) {}
 
     // ===================== Upload Modal =====================
