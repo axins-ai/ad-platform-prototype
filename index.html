@@ -522,7 +522,7 @@
   <div class="modal-overlay" id="uploadModal">
     <div class="modal" style="width: 680px;">
       <div class="modal-header">
-        <div class="modal-title">批量上传子账号</div>
+        <div class="modal-title">批量上传子账号（存量专用）</div>
         <div class="modal-close" onclick="closeUploadModal()"><i class="fas fa-times"></i></div>
       </div>
       <div class="modal-body upload-modal-body">
@@ -531,7 +531,6 @@
           <div class="upload-tip">
             <div><i class="fas fa-info-circle"></i> 请先下载模板，按模板格式填写后再上传</div>
             <div style="margin-top:6px;color:#cf1322;font-size:12px;"><i class="fas fa-exclamation-circle"></i> 传前请务必删除第2行（示例数据行），否则示例数据会被一并上传！</div>
-            <div style="margin-top:8px;color:#1890ff;font-size:13px;font-weight:500;"><i class="fas fa-briefcase"></i> 存量业务专用</div>
           </div>
           <button class="btn btn-default" onclick="downloadTemplate()" style="font-size: 13px;">
             <i class="fas fa-file-excel"></i> 下载模板
@@ -633,10 +632,8 @@
       <div class="modal-body" style="padding: 20px 24px;">
         <div style="margin-bottom: 16px;">
           <label style="display:block;margin-bottom:6px;font-weight:500;font-size:14px;">业务 <span style="color:#cf1322;">*</span></label>
-          <select id="newAccountSetBizType" style="width:100%;padding:7px 12px;border:1px solid #d9d9d9;border-radius:4px;font-size:14px;outline:none;cursor:pointer;">
-            <option value="存量" selected>存量</option>
-            <option value="权益">权益</option>
-          </select>
+          <div style="width:100%;padding:7px 12px;border:1px solid #d9d9d9;border-radius:4px;font-size:14px;color:#333;background:#f5f5f5;">存量</div>
+          <input type="hidden" id="newAccountSetBizType" value="存量">
         </div>
         <div style="margin-bottom: 16px;">
           <label style="display:block;margin-bottom:6px;font-weight:500;font-size:14px;">账户集名称 <span style="color:#cf1322;">*</span></label>
